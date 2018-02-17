@@ -1,0 +1,9 @@
+{
+    "template": "message_macros",
+    "description": "Check if the signature is shown-able",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "/<xf:macro name=\"signature\" arg-user=\"!\">(.*)<\\/xf:macro>/s",
+    "replace": "<xf:macro name=\"signature\" arg-user=\"!\" arg-post=\"{{ false }}\">\n\t<xf:if is=\"{$post}\">\n\t\t<xf:set var=\"$continueShowingSignature\" value=\"{{ $post.canShowSignature() }}\" />\n\t<xf:else />\n\t\t<xf:set var=\"$continueShowingSignature\" value=\"{{ true }}\" />\n\t</xf:if>\n\t\n\t<xf:if is=\"$xf.visitor.Option.content_show_signature AND $user.Profile.signature AND $continueShowingSignature\">\n\t\t<xf:if contentcheck=\"true\">\n\t\t\t<aside class=\"message-signature\">\n\t\t\t<xf:contentcheck>\n\t\t\t\t{{ bb_code($user.Profile.signature, 'user:signature', $user) }}\n\t\t\t</xf:contentcheck>\n\t\t\t</aside>\n\t\t</xf:if>\n\t</xf:if>\n</xf:macro>"
+}
