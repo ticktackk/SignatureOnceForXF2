@@ -1,7 +1,7 @@
 {
     "legacy_addon_id": "",
     "title": "Signature Once",
-    "description": "",
+    "description": "This add-on allows user signature to be shown only once per thread or once per page.",
     "version_id": 1000011,
     "version_string": "1.0.0 Alpha 1",
     "dev": "TickTackk",
@@ -10,5 +10,5 @@
     "support_url": "",
     "extra_urls": [],
     "require": [],
-    "icon": ""
+    "icon": "fa-paint-brush"
 }
