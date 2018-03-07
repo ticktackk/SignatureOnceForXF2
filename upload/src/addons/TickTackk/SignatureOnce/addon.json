@@ -2,13 +2,22 @@
     "legacy_addon_id": "",
     "title": "Signature Once",
     "description": "This add-on allows user signature to be shown only once per thread or once per page.",
-    "version_id": 1000011,
-    "version_string": "1.0.0 Alpha 1",
+    "version_id": 1000070,
+    "version_string": "1.0.0",
     "dev": "TickTackk",
     "dev_url": "https://twitter.com/t1cktackk",
     "faq_url": "",
     "support_url": "",
     "extra_urls": [],
-    "require": [],
+    "require": {
+        "XF": [
+            2000010,
+            "XenForo 2.0.0+"
+        ],
+        "php": [
+            "5.6.0",
+            "PHP 5.6.0+"
+        ]
+    },
     "icon": "fa-paint-brush"
 }

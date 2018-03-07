@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Repository\\Post",
+    "to_class": "TickTackk\\SignatureOnce\\XF\\Repository\\Post",
+    "execute_order": 5,
+    "active": true
+}
