@@ -1,8 +1,8 @@
 {
-    "public/signatureOnce_message_macros.json": {
-        "hash": "e71826b1e0ccc1cf2c9517285f018a97"
-    },
-    "public/signatureOnce_post_macros.json": {
-        "hash": "55d868f8f0403a938a16f727c1d01546"
-    }
+  "public/signatureOnce_message_macros.json": {
+    "hash": "e71826b1e0ccc1cf2c9517285f018a97"
+  },
+  "public/signatureOnce_post_macros.json": {
+    "hash": "55d868f8f0403a938a16f727c1d01546"
+  }
 }

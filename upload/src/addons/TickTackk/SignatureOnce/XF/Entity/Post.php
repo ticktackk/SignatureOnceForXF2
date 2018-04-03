@@ -5,22 +5,6 @@ namespace TickTackk\SignatureOnce\XF\Entity;
 class Post extends XFCP_Post
 {
     /**
-     * @param null|string $error
-     *
-     * @return bool
-     */
-    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */
-        &$error = null)
-    {
-        $thread = $this->Thread;
-        $visitor = \XF::visitor();
-
-        $nodeId = $thread->node_id;
-
-        return $visitor->hasNodePermission($nodeId, 'bypassSignatureOnce');
-    }
-
-    /**
      * @return bool
      */
     public function canShowSignature()
@@ -47,5 +31,21 @@ class Post extends XFCP_Post
 
         $postRepo->updateCachedPostsForThreadForSignatureOnce($this->Thread, $threadPostCache);
         return $threadPostCache[$this->user_id]['pages'][$currentPage]['posts'][$this->post_id]['signatureShown'];
+    }
+
+    /**
+     * @param null|string $error
+     *
+     * @return bool
+     */
+    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */
+        &$error = null)
+    {
+        $thread = $this->Thread;
+        $visitor = \XF::visitor();
+
+        $nodeId = $thread->node_id;
+
+        return $visitor->hasNodePermission($nodeId, 'bypassSignatureOnce');
     }
 }

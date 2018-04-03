@@ -6,15 +6,22 @@ use XF\Entity\Thread;
 
 class Post extends XFCP_Post
 {
+    /**
+     * @var array
+     */
     protected $threadPostCache = [];
 
+    /**
+     * @param Thread $thread
+     * @param array  $threadPostCacheData
+     */
     public function updateCachedPostsForThreadForSignatureOnce(Thread $thread, array $threadPostCacheData)
     {
         $this->threadPostCache[$thread->thread_id] = $threadPostCacheData;
     }
 
     /**
-     * @param Thread $thread
+     * @param Thread          $thread
      * @param \XF\Entity\Post $currentPost
      *
      * @return array
@@ -29,6 +36,7 @@ class Post extends XFCP_Post
 
         if (empty($this->threadPostCache))
         {
+            /** @var \XF\Finder\Post $finder */
             $finder = $this->finder('XF:Post');
             $postsInThread = $finder->inThread($thread);
 
@@ -38,7 +46,7 @@ class Post extends XFCP_Post
             }
 
             $postsInThread = $postsInThread
-                ->order('position', 'ASC') // asc because older posts show first
+                ->order('position', 'ASC')// asc because older posts show first
                 ->fetchColumns(['user_id', 'post_id', 'position']);
 
             foreach ($postsInThread as $postInThread)
