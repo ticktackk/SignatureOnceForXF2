@@ -1,26 +1,26 @@
 {
-  "legacy_addon_id": "",
-  "title": "Signature Once",
-  "description": "This add-on allows user signature to be shown only once per thread or once per page.",
-  "version_id": 1000070,
-  "version_string": "1.0.0",
-  "dev": "TickTackk",
-  "dev_url": "https://xenforo.com/community/members/batpool52.90375/",
-  "faq_url": "",
-  "support_url": "https://xenforo.com/community/threads/signature-once.143023/",
-  "extra_urls": {
-    "Twitter": "https://twitter.com/t1cktackk",
-    "Discord": "https://discord.gg/Eb7hje2"
-  },
-  "require": {
-    "XF": [
-      2000010,
-      "XenForo 2.0.0+"
-    ],
-    "php": [
-      "5.6.0",
-      "PHP 5.6.0+"
-    ]
-  },
-  "icon": "fa-paint-brush"
+    "legacy_addon_id": "",
+    "title": "Signature Once",
+    "description": "This add-on allows user signature to be shown only once per thread or once per page.",
+    "version_id": 1000170,
+    "version_string": "1.0.1",
+    "dev": "TickTackk",
+    "dev_url": "https://xenforo.com/community/members/batpool52.90375/",
+    "faq_url": "",
+    "support_url": "https://xenforo.com/community/threads/signature-once.143023/",
+    "extra_urls": {
+        "Twitter": "https://twitter.com/t1cktackk",
+        "Discord": "https://discord.gg/Eb7hje2"
+    },
+    "require": {
+        "XF": [
+            2000010,
+            "XenForo 2.0.0+"
+        ],
+        "php": [
+            "5.6.0",
+            "PHP 5.6.0+"
+        ]
+    },
+    "icon": "fa-paint-brush"
 }
