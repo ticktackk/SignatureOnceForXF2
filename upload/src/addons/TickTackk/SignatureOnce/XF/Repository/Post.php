@@ -4,6 +4,11 @@ namespace TickTackk\SignatureOnce\XF\Repository;
 
 use XF\Entity\Thread;
 
+/**
+ * Class Post
+ *
+ * @package TickTackk\SignatureOnce
+ */
 class Post extends XFCP_Post
 {
     /**
@@ -28,27 +33,23 @@ class Post extends XFCP_Post
      */
     public function getCachedPostsForThreadForSignatureOnce(Thread $thread, \XF\Entity\Post $currentPost)
     {
-        $options = $this->app()->options();
+        $options = $this->options();
         $showSignatureOncePerThread = $options->showSignatureOncePerThread;
 
         $messagesPerPage = $options->messagesPerPage;
         $currentPage = floor($currentPost->position / $messagesPerPage) + 1;
 
-        if (empty($this->threadPostCache))
+        if (!isset($this->threadPostCache[$thread->thread_id]))
         {
             /** @var \XF\Finder\Post $finder */
             $finder = $this->finder('XF:Post');
             $postsInThread = $finder->inThread($thread);
 
-            if (!$showSignatureOncePerThread)
-            {
-                $postsInThread = $postsInThread->onPage($currentPage);
-            }
-
             $postsInThread = $postsInThread
                 ->order('position', 'ASC')// asc because older posts show first
                 ->fetchColumns(['user_id', 'post_id', 'position']);
 
+            /** @var \TickTackk\SignatureOnce\XF\Entity\Post $postInThread */
             foreach ($postsInThread as $postInThread)
             {
                 $postInPage = floor($postInThread['position'] / $messagesPerPage) + 1;

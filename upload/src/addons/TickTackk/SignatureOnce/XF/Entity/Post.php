@@ -2,6 +2,11 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
+/**
+ * Class Post
+ *
+ * @package TickTackk\SignatureOnce
+ */
 class Post extends XFCP_Post
 {
     /**
