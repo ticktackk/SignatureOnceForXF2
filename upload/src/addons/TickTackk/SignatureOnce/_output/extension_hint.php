@@ -5,14 +5,10 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity
 {
-    class XFCP_Post extends \XF\Entity\Post
-    {
-    }
+	class XFCP_Post extends \XF\Entity\Post {}
 }
 
 namespace TickTackk\SignatureOnce\XF\Repository
 {
-    class XFCP_Post extends \XF\Repository\Post
-    {
-    }
+	class XFCP_Post extends \XF\Repository\Post {}
 }
