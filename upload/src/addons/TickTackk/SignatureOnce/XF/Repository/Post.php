@@ -43,9 +43,7 @@ class Post extends XFCP_Post
         {
             /** @var \XF\Finder\Post $finder */
             $finder = $this->finder('XF:Post');
-            $postsInThread = $finder->inThread($thread);
-
-            $postsInThread = $postsInThread
+            $postsInThread = $finder->inThread($thread)
                 ->order('position', 'ASC')// asc because older posts show first
                 ->fetchColumns(['user_id', 'post_id', 'position']);
 
