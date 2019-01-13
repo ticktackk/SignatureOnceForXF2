@@ -2,7 +2,7 @@
 
 namespace TickTackk\SignatureOnce\XF\Repository;
 
-use XF\Entity\Thread;
+use XF\Mvc\Entity\ArrayCollection;
 
 /**
  * Class Post
@@ -11,61 +11,69 @@ use XF\Entity\Thread;
  */
 class Post extends XFCP_Post
 {
-    /**
-     * @var array
-     */
-    protected $threadPostCache = [];
+    protected $columnPrefixForPostData = 'post_';
 
     /**
-     * @param Thread $thread
-     * @param array  $threadPostCacheData
-     */
-    public function updateCachedPostsForThreadForSignatureOnce(Thread $thread, array $threadPostCacheData)
-    {
-        $this->threadPostCache[$thread->thread_id] = $threadPostCacheData;
-    }
-
-    /**
-     * @param Thread          $thread
-     * @param \XF\Entity\Post $currentPost
+     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\Post[] $posts
+     * @param int             $page
+     * @param null            $postCounts
      *
-     * @return array
+     * @return ArrayCollection
      */
-    public function getCachedPostsForThreadForSignatureOnce(Thread $thread, \XF\Entity\Post $currentPost)
+    public function setPostsShowSignature(ArrayCollection $posts, $page = 1, $postCounts = null)
     {
-        $options = $this->options();
-        $showSignatureOncePerThread = $options->showSignatureOncePerThread;
-
-        $messagesPerPage = $options->messagesPerPage;
-        $currentPage = floor($currentPost->position / $messagesPerPage) + 1;
-
-        if (!isset($this->threadPostCache[$thread->thread_id]))
+        if ($postCounts === null)
         {
-            /** @var \XF\Finder\Post $finder */
-            $finder = $this->finder('XF:Post');
-            $postsInThread = $finder->inThread($thread)
-                ->order('position', 'ASC')// asc because older posts show first
-                ->fetchColumns(['user_id', 'post_id', 'position']);
+            $postCounts = $this->getPostCountsForSignatureOnce($posts, $page);
+        }
 
-            /** @var \TickTackk\SignatureOnce\XF\Entity\Post $postInThread */
-            foreach ($postsInThread as $postInThread)
+        foreach ($postCounts AS $postId => $postCount)
+        {
+            $postIdInt = (int) utf8_substr($postId, utf8_strlen($this->columnPrefixForPostData));
+            if (isset($posts[$postIdInt]))
             {
-                $postInPage = floor($postInThread['position'] / $messagesPerPage) + 1;
-                if (empty($this->threadPostCache[$thread->thread_id][$postInThread['user_id']]['pages'][$postInPage]['postCount']))
-                {
-                    $this->threadPostCache[$thread->thread_id][$postInThread['user_id']]['pages'][$postInPage]['postCount'] = 1;
-                }
-                else
-                {
-                    $this->threadPostCache[$thread->thread_id][$postInThread['user_id']]['pages'][$postInPage]['postCount']++;
-                }
-                $this->threadPostCache[$thread->thread_id][$postInThread['user_id']]['pages'][$postInPage]['posts'][$postInThread['post_id']] = [
-                    'postId' => $postInThread['post_id'],
-                    'signatureShown' => false
-                ];
+                $posts[$postIdInt]->setShowSignature($postCount === 0);
             }
         }
 
-        return [$currentPage, $showSignatureOncePerThread, $this->threadPostCache[$thread->thread_id]];
+        return $posts;
+    }
+
+    /**
+     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\Post[] $posts
+     * @param int             $page
+     *
+     * @return array|bool|false
+     */
+    public function getPostCountsForSignatureOnce(ArrayCollection $posts, $page = 1)
+    {
+        $db = $this->app()->db();
+        $perThread = $this->options()->showSignatureOncePerThread;
+        $perPage = $this->options()->messagesPerPage;
+        $page = max(1, $page);
+
+        $queries = [];
+        foreach ($posts AS $post)
+        {
+            if ($thread = $post->Thread)
+            {
+                /** @var \XF\Finder\Post $postFinder */
+                $postFinder = $this->finder('XF:Post');
+                $postFinder
+                    ->inThread($thread)
+                    ->applyVisibilityChecksInThread($thread)
+                    ->where('user_id', $post->user_id)
+                    ->where('position', '<', $post->position);
+
+                if (!$perThread)
+                {
+                    $postFinder->whereSql('(FLOOR(' . $postFinder->columnSqlName('position') . "/{$perPage}) + 1) >= {$page}");
+                }
+
+                $queries[] = "({$postFinder->total()}) AS {$this->columnPrefixForPostData}{$post->post_id}";
+            }
+        }
+
+        return $db->fetchRow('SELECT ' . implode(', ', $queries) . ' FROM xf_post LIMIT 1');
     }
 }

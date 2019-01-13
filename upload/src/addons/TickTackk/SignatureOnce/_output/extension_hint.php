@@ -8,6 +8,11 @@ namespace TickTackk\SignatureOnce\XF\Entity
 	class XFCP_Post extends \XF\Entity\Post {}
 }
 
+namespace TickTackk\SignatureOnce\XF\Pub\Controller
+{
+	class XFCP_Thread extends \XF\Pub\Controller\Thread {}
+}
+
 namespace TickTackk\SignatureOnce\XF\Repository
 {
 	class XFCP_Post extends \XF\Repository\Post {}

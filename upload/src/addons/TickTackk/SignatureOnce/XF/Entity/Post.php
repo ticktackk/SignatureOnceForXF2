@@ -10,32 +10,36 @@ namespace TickTackk\SignatureOnce\XF\Entity;
 class Post extends XFCP_Post
 {
     /**
-     * @return bool
+     * @var null|bool
      */
-    public function canShowSignature()
+    protected $showSignature;
+
+    /**
+     * @param null|bool $showSignature
+     */
+    public function setShowSignature($showSignature = null)
+    {
+        $this->showSignature = $showSignature;
+    }
+
+    /**
+     * @param null $error
+     *
+     * @return bool|null
+     */
+    public function canShowSignature(/** @noinspection PhpUnusedParameterInspection */&$error = null)
     {
         if ($this->canBypassSignatureOnce())
         {
             return true;
         }
 
-        /** @var \TickTackk\SignatureOnce\XF\Repository\Post $postRepo */
-        $postRepo = $this->repository('XF:Post');
-        list($currentPage, $showSignatureOncePerThread, $threadPostCache) = $postRepo->getCachedPostsForThreadForSignatureOnce($this->Thread, $this);
-
-        if ($showSignatureOncePerThread)
+        if (!$thread = $this->Thread)
         {
-            $firstPageNumberWithPost = key($threadPostCache[$this->user_id]['pages']);
-            $firstPostIdInThreadByUser = key($threadPostCache[$this->user_id]['pages'][$firstPageNumberWithPost]['posts']);
-            $threadPostCache[$this->user_id]['pages'][$firstPageNumberWithPost]['posts'][$firstPostIdInThreadByUser]['signatureShown'] = true;
-        }
-        else
-        {
-            $threadPostCache[$this->user_id]['pages'][$currentPage]['posts'][key($threadPostCache[$this->user_id]['pages'][$currentPage]['posts'])]['signatureShown'] = true;
+            return false;
         }
 
-        $postRepo->updateCachedPostsForThreadForSignatureOnce($this->Thread, $threadPostCache);
-        return $threadPostCache[$this->user_id]['pages'][$currentPage]['posts'][$this->post_id]['signatureShown'];
+        return $this->showSignature;
     }
 
     /**
@@ -43,8 +47,7 @@ class Post extends XFCP_Post
      *
      * @return bool
      */
-    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */
-        &$error = null)
+    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */ &$error = null)
     {
         $thread = $this->Thread;
         $visitor = \XF::visitor();

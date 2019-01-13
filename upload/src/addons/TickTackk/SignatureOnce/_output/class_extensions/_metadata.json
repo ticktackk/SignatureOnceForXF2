@@ -1,8 +1,11 @@
 {
-  "XF-Entity-Post_TickTackk-SignatureOnce-XF-Entity-Post.json": {
-    "hash": "e456d721735d7c793176e8cc99077e65"
-  },
-  "XF-Repository-Post_TickTackk-SignatureOnce-XF-Repository-Post.json": {
-    "hash": "0cb24027e484d5f7aa57cbb045bb4740"
-  }
+    "XF-Entity-Post_TickTackk-SignatureOnce-XF-Entity-Post.json": {
+        "hash": "e456d721735d7c793176e8cc99077e65"
+    },
+    "XF-Pub-Controller-Thread_TickTackk-SignatureOnce-XF-Pub-Controller-Thread.json": {
+        "hash": "6c44e50c510b8430cabfd4bbcc0cbbe0"
+    },
+    "XF-Repository-Post_TickTackk-SignatureOnce-XF-Repository-Post.json": {
+        "hash": "0cb24027e484d5f7aa57cbb045bb4740"
+    }
 }
