@@ -11,6 +11,9 @@ use XF\Mvc\Entity\ArrayCollection;
  */
 class Post extends XFCP_Post
 {
+    /**
+     * @var string
+     */
     protected $columnPrefixForPostData = 'post_';
 
     /**
@@ -20,7 +23,7 @@ class Post extends XFCP_Post
      *
      * @return ArrayCollection
      */
-    public function setPostsShowSignature(ArrayCollection $posts, $page = 1, $postCounts = null)
+    public function setPostsShowSignature(ArrayCollection $posts, $page, $postCounts = null)
     {
         if ($postCounts === null)
         {
@@ -45,12 +48,11 @@ class Post extends XFCP_Post
      *
      * @return array|bool|false
      */
-    public function getPostCountsForSignatureOnce(ArrayCollection $posts, $page = 1)
+    public function getPostCountsForSignatureOnce(ArrayCollection $posts, $page)
     {
         $db = $this->app()->db();
         $perThread = $this->options()->showSignatureOncePerThread;
         $perPage = $this->options()->messagesPerPage;
-        $page = max(1, $page);
 
         $queries = [];
         foreach ($posts AS $post)

@@ -1,9 +1,24 @@
 {
+    "XF-Entity-ConversationMaster_TickTackk-SignatureOnce-XF-Entity-ConversationMaster.json": {
+        "hash": "41358488ef413e375dee286af755766a"
+    },
+    "XF-Entity-ConversationMessage_TickTackk-SignatureOnce-XF-Entity-ConversationMessage.json": {
+        "hash": "019c694cc1f05dd0fa32f77429cf5e5a"
+    },
     "XF-Entity-Post_TickTackk-SignatureOnce-XF-Entity-Post.json": {
         "hash": "e456d721735d7c793176e8cc99077e65"
     },
+    "XF-Entity-Thread_TickTackk-SignatureOnce-XF-Entity-Thread.json": {
+        "hash": "75b539d94ee5f1c7a591d080dae85200"
+    },
+    "XF-Pub-Controller-Conversation_TickTackk-SignatureOnce-XF-Pub-Controller-Conversation.json": {
+        "hash": "99e868a5802bfe5f8dfd7e7ebb39e810"
+    },
     "XF-Pub-Controller-Thread_TickTackk-SignatureOnce-XF-Pub-Controller-Thread.json": {
         "hash": "6c44e50c510b8430cabfd4bbcc0cbbe0"
+    },
+    "XF-Repository-ConversationMessage_TickTackk-SignatureOnce-XF-Repository-ConversationMessage.json": {
+        "hash": "9a57ba6ac4f0807a4f67e338ba785577"
     },
     "XF-Repository-Post_TickTackk-SignatureOnce-XF-Repository-Post.json": {
         "hash": "0cb24027e484d5f7aa57cbb045bb4740"

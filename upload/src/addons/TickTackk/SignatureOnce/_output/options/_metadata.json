@@ -1,5 +1,8 @@
 {
-  "showSignatureOncePerThread.json": {
-    "hash": "d0e84e422d9bd56c3662f0264ea47d17"
-  }
+    "showSignatureOncePerConversation.json": {
+        "hash": "d6ff603bf4d7d4f1a5fc238ca7b06e2d"
+    },
+    "showSignatureOncePerThread.json": {
+        "hash": "d0e84e422d9bd56c3662f0264ea47d17"
+    }
 }

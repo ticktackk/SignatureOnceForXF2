@@ -1,8 +1,11 @@
 {
-  "public/signatureOnce_message_macros.json": {
-    "hash": "e71826b1e0ccc1cf2c9517285f018a97"
-  },
-  "public/signatureOnce_post_macros.json": {
-    "hash": "55d868f8f0403a938a16f727c1d01546"
-  }
+    "public/signatureOnce_conversation_message_macros.json": {
+        "hash": "75d933bb176c22e2d902ee584dc8a457"
+    },
+    "public/signatureOnce_message_macros.json": {
+        "hash": "be9fe2c24c5da5b9ad5c47296a2b67a9"
+    },
+    "public/signatureOnce_post_macros.json": {
+        "hash": "c7e7ef4d9d3a381a01bac5118795c386"
+    }
 }

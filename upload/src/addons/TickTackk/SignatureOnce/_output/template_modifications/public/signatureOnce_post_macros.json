@@ -5,5 +5,5 @@
     "enabled": true,
     "action": "str_replace",
     "find": "<xf:macro template=\"message_macros\" name=\"signature\" arg-user=\"{$post.User}\" />",
-    "replace": "<xf:macro template=\"message_macros\" name=\"signature\" arg-user=\"{$post.User}\" arg-post=\"{$post}\" />"
+    "replace": "<xf:macro template=\"message_macros\" name=\"signature\" arg-user=\"{$post.User}\" arg-content=\"{$post}\" />"
 }

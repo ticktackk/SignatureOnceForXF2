@@ -28,7 +28,8 @@ class Thread extends XFCP_Thread
             /** @var \TickTackk\SignatureOnce\XF\Repository\Post $postRepo */
             $postRepo = $this->repository('XF:Post');
             /** @noinspection PhpUndefinedFieldInspection */
-            $posts = $postRepo->setPostsShowSignature($posts, $params->page);
+            $page = $this->filterPage($params->page);
+            $posts = $postRepo->setPostsShowSignature($posts, $page);
             $response->setParam('posts', $posts);
         }
 
