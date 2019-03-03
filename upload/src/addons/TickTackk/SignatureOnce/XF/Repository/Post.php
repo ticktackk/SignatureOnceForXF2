@@ -72,7 +72,7 @@ class Post extends XFCP_Post
                     $postFinder->whereSql('(FLOOR(' . $postFinder->columnSqlName('position') . "/{$perPage}) + 1) >= {$page}");
                 }
 
-                $queries[] = "({$postFinder->total()}) AS {$this->columnPrefixForPostData}{$post->post_id}";
+                $queries[] = "({$postFinder->getQuery(['countOnly' => true])}) AS {$this->columnPrefixForPostData}{$post->post_id}";
             }
         }
 

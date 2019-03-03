@@ -77,7 +77,7 @@ class ConversationMessage extends XFCP_ConversationMessage
                         ->limitByPage($page, $perPage);
                 }
 
-                $queries[] = "({$conversationMessageFinder->total()}) AS {$this->columnPrefixForPostData}{$conversationMessage->message_id}";
+                $queries[] = "({$conversationMessageFinder->getQuery(['countOnly' => true])}) AS {$this->columnPrefixForPostData}{$conversationMessage->message_id}";
             }
         }
 
