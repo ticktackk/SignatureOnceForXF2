@@ -1,1 +1,1 @@
-If checked, user's signature will be only be shown once per thread.
+If unchecked, user's signature will be only be shown once per page.
