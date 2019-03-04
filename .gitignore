@@ -2,3 +2,6 @@ _releases
 _data
 hashes.json
 /.idea/
+.DS_Store
+.phpstorm.meta.php
+_metadata.json
