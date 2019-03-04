@@ -3,12 +3,12 @@
 Allows user signature to be shown only once per thread or conversation.
 
 ## Options
-- Under Admin > Options > Messages
+- Under Admin CP > Options > Threads, discussions and conversations
   - Show user's signature once per thread
   - Show user's signature once per conversation
 
 ## Permissions
-- Under Admin > Groups & permissions > [Usergroup]
+- Under Admin CP > Groups & permissions > [Usergroup]
   - Forum permissions (supports node specific permissions)
     - Bypass signature once
   - Conversation permissions
