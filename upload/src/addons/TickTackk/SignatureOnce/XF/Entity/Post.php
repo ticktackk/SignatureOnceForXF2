@@ -2,6 +2,9 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
+use TickTackk\SignatureOnce\Entity\ContentInterface;
+use TickTackk\SignatureOnce\Entity\ContentTrait;
+
 /**
  * Class Post
  *
@@ -10,34 +13,23 @@ namespace TickTackk\SignatureOnce\XF\Entity;
  * RELATIONS
  * @property \TickTackk\SignatureOnce\XF\Entity\Thread Thread
  */
-class Post extends XFCP_Post
+class Post extends XFCP_Post implements ContentInterface
 {
-    /**
-     * @var null|bool
-     */
-    protected $showSignature;
-
-    /**
-     * @param null|bool $showSignature
-     */
-    public function setShowSignature($showSignature = null)
-    {
-        $this->showSignature = $showSignature;
-    }
+    use ContentTrait;
 
     /**
      * @param null $error
      *
      * @return bool|null
      */
-    public function canShowSignature(/** @noinspection PhpUnusedParameterInspection */&$error = null)
+    public function canShowSignature(&$error = null)
     {
         if (!$this->Thread)
         {
             return false;
         }
 
-        if ($this->canBypassSignatureOnce())
+        if ($this->canBypassSignatureOnce($error))
         {
             return true;
         }
@@ -50,7 +42,7 @@ class Post extends XFCP_Post
      *
      * @return bool
      */
-    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */&$error = null)
+    public function canBypassSignatureOnce(&$error = null)
     {
         if (!$thread = $this->Thread)
         {

@@ -23,15 +23,18 @@ class Thread extends XFCP_Thread
     {
         $response = parent::actionIndex($params);
 
-        if ($response instanceof View && ($thread = $response->getParam('thread')) && ($posts = $response->getParam('posts')))
+        if ($response instanceof View)
         {
-            /** @var \TickTackk\SignatureOnce\XF\Repository\Post $postRepo */
-            $postRepo = $this->repository('XF:Post');
-
+            /** @var \TickTackk\SignatureOnce\ControllerPlugin\Container $containerPlugin */
+            $containerPlugin = $this->plugin('TickTackk\SignatureOnce:Container');
             /** @noinspection PhpUndefinedFieldInspection */
-            $page = $this->filterPage($params->page);
-            $posts = $postRepo->setPostsShowSignature($thread, $posts, $page);
-            $response->setParam('posts', $posts);
+            $containerPlugin->setShowSignature(
+                $response,
+                'thread',
+                'posts',
+                $this->filterPage($params->page),
+                'XF:Post'
+            );
         }
 
         return $response;

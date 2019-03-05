@@ -2,7 +2,13 @@
 
 namespace TickTackk\SignatureOnce\XF\Repository;
 
+use TickTackk\SignatureOnce\Entity\ContainerInterface;
+use TickTackk\SignatureOnce\Repository\ContentInterface;
+use TickTackk\SignatureOnce\Repository\ContentTrait;
 use XF\Mvc\Entity\ArrayCollection;
+use XF\Mvc\Entity\Entity;
+use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
+use TickTackk\SignatureOnce\Entity\ContentInterface as EntityContentInterface;
 
 /**
  * Class ConversationMessage
@@ -11,64 +17,44 @@ use XF\Mvc\Entity\ArrayCollection;
  *
  * @package TickTackk\SignatureOnce\XF\Repository
  */
-class ConversationMessage extends XFCP_ConversationMessage
+class ConversationMessage extends XFCP_ConversationMessage implements ContentInterface
 {
+    use ContentTrait;
+
     /**
-     * @param \XF\Entity\ConversationMaster                                            $master
-     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\ConversationMessage[] $messages
-     * @param null|array                                                               $messageCounts
-     *
-     * @return ArrayCollection
+     * @return bool
      */
-    public function setConversationsShowSignature(\XF\Entity\ConversationMaster $master, ArrayCollection $messages, $messageCounts = null)
+    public function showSignatureOncePerPage()
     {
-        if ($messageCounts === null)
-        {
-            $messageCounts = $this->getMessageCountsForSignatureOnce($master, $messages);
-        }
-
-        foreach ($messages AS $conversationMessageId => $conversationMessage)
-        {
-            $showOncePerConversation = $this->options()->showSignatureOncePerConversation;
-            if ($showOncePerConversation)
-            {
-                $showSignature = !isset($messageCounts[$conversationMessageId]);
-            }
-            else
-            {
-                $showSignature = isset($messageCounts[$conversationMessageId]);
-            }
-            $messages[$conversationMessageId]->setShowSignature($showSignature);
-        }
-
-        return $messages;
+        return !$this->options()->showSignatureOncePerConversation;
     }
 
     /**
-     * @param \XF\Entity\ConversationMaster $master
-     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\ConversationMessage[] $messages
+     * @param Entity|ContainerInterface $container
+     * @param ArrayCollection|EntityContentTrait[]|EntityContentInterface[]    $messages
+     * @param                    $page
      *
      * @return array
      */
-    public function getMessageCountsForSignatureOnce(\XF\Entity\ConversationMaster $master, ArrayCollection $messages)
+    public function getMessageCountsForSignatureOnce(/** @noinspection PhpUnusedParameterInspection */Entity $container, ArrayCollection $messages, $page)
     {
         $db = $this->db();
 
         /** @var \TickTackk\SignatureOnce\XF\Entity\ConversationMessage $firstMessage */
         $firstMessage = $messages->first();
-
         /** @var \TickTackk\SignatureOnce\XF\Entity\ConversationMessage $lastMessage */
         $lastMessage = $messages->last();
 
         $oncePerContent = 'conversation_message_tmp.message_id < conversation_message.message_id AND';
         $groupBy = 'message_id';
 
-        if (!$this->options()->showSignatureOncePerConversation)
+        if ($this->showSignatureOncePerPage())
         {
             $oncePerContent = '';
             $groupBy = 'user_id';
         }
 
+        /** @var \TickTackk\SignatureOnce\XF\Entity\ConversationMaster $container */
         return $db->fetchPairs("
             SELECT conversation_message.message_id, COUNT(*)
             FROM xf_conversation_message AS conversation_message
@@ -84,6 +70,6 @@ class ConversationMessage extends XFCP_ConversationMessage
               AND conversation_message.message_id < ?
             GROUP BY conversation_message.{$groupBy}
             ORDER BY message_id ASC
-        ", [$master->conversation_id, $master->conversation_id, $firstMessage->message_id, $lastMessage->message_id]);
+        ", [$container->conversation_id, $container->conversation_id, $firstMessage->message_id, $lastMessage->message_id]);
     }
 }

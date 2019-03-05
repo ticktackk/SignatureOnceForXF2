@@ -2,30 +2,20 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
+use TickTackk\SignatureOnce\Entity\ContentInterface;
+use TickTackk\SignatureOnce\Entity\ContentTrait;
+
 /**
  * Class ConversationMessage
- * 
- * Extends \XF\Entity\ConversationMessage
  *
  * @package TickTackk\SignatureOnce\XF\Entity
  *
  * RELATIONS
  * @property \TickTackk\SignatureOnce\XF\Entity\ConversationMaster Conversation
  */
-class ConversationMessage extends XFCP_ConversationMessage
+class ConversationMessage extends XFCP_ConversationMessage implements ContentInterface
 {
-    /**
-     * @var null|bool
-     */
-    protected $showSignature;
-
-    /**
-     * @param null|bool $showSignature
-     */
-    public function setShowSignature($showSignature = null)
-    {
-        $this->showSignature = $showSignature;
-    }
+    use ContentTrait;
 
     /**
      * @param null $error

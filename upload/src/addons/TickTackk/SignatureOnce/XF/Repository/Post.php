@@ -2,68 +2,53 @@
 
 namespace TickTackk\SignatureOnce\XF\Repository;
 
+use TickTackk\SignatureOnce\Entity\ContainerInterface;
+use TickTackk\SignatureOnce\Repository\ContentInterface;
+use TickTackk\SignatureOnce\Repository\ContentTrait;
 use XF\Mvc\Entity\ArrayCollection;
+use XF\Mvc\Entity\Entity;
+use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
+use TickTackk\SignatureOnce\Entity\ContentInterface as EntityContentInterface;
 
 /**
  * Class Post
  *
  * @package TickTackk\SignatureOnce
  */
-class Post extends XFCP_Post
+class Post extends XFCP_Post implements ContentInterface
 {
+    use ContentTrait;
+
     /**
-     * @param \XF\Entity\Thread $thread
-     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\Post[]   $posts
-     * @param                    $page
-     * @param null|array         $postCounts
-     *
-     * @return ArrayCollection
+     * @return bool
      */
-    public function setPostsShowSignature(\XF\Entity\Thread $thread, ArrayCollection $posts, $page, $postCounts = null)
+    public function showSignatureOncePerPage()
     {
-        if ($postCounts === null)
-        {
-            $postCounts = $this->getPostCountsForSignatureOnce($thread, $page);
-        }
-
-        foreach ($posts AS $postId => $post)
-        {
-            $showOncePerThread = $this->options()->showSignatureOncePerThread;
-            if ($showOncePerThread)
-            {
-                $showSignature = !isset($postCounts[$postId]);
-            }
-            else
-            {
-                $showSignature = isset($postCounts[$postId]);
-            }
-
-            $posts[(int) $postId]->setShowSignature($showSignature);
-        }
-
-        return $posts;
+        return !$this->options()->showSignatureOncePerThread;
     }
 
     /**
-     * @param \XF\Entity\Thread $thread
-     * @param                   $page
+     * @param Entity|ContainerInterface                                     $container
+     * @param ArrayCollection|EntityContentTrait[]|EntityContentInterface[] $messages
+     * @param int                                                           $page
      *
      * @return array
      */
-    public function getPostCountsForSignatureOnce(\XF\Entity\Thread $thread, $page)
+    public function getMessageCountsForSignatureOnce(/** @noinspection PhpUnusedParameterInspection */ ContainerInterface $container, ArrayCollection $messages, $page)
     {
         $db = $this->app()->db();
-        $perPage = $this->options()->messagesPerPage;
 
+        $perPage = $this->options()->messagesPerPage;
         $start = ($page - 1) * $perPage;
         $end = $start + $perPage;
-
         $messageStates = ['visible'];
-        if ($thread->canViewDeletedPosts())
+
+        /** @var \TickTackk\SignatureOnce\XF\Entity\Thread $container */
+        if ($container->canViewDeletedPosts())
         {
             $messageStates[] = 'deleted';
         }
-        if ($thread->canViewModeratedPosts())
+        if ($container->canViewModeratedPosts())
         {
             $messageStates[] = 'moderated';
         }
@@ -71,7 +56,7 @@ class Post extends XFCP_Post
         $oncePerContent = 'post_tmp.position < post.position AND';
         $groupBy = 'post_id';
 
-        if (!$this->options()->showSignatureOncePerThread)
+        if ($this->showSignatureOncePerPage())
         {
             $oncePerContent = '';
             $groupBy = 'user_id';
@@ -95,6 +80,6 @@ class Post extends XFCP_Post
             GROUP BY post.{$groupBy}
             ORDER BY post_id ASC
             LIMIT ?
-        ", [$thread->thread_id, $thread->thread_id, $start, $end, $perPage]);
+        ", [$container->thread_id, $container->thread_id, $start, $end, $perPage]);
     }
 }
