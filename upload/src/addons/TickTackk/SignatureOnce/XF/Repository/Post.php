@@ -12,70 +12,89 @@ use XF\Mvc\Entity\ArrayCollection;
 class Post extends XFCP_Post
 {
     /**
-     * @var string
-     */
-    protected $columnPrefixForPostData = 'post_';
-
-    /**
-     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\Post[] $posts
-     * @param int             $page
-     * @param null            $postCounts
+     * @param \XF\Entity\Thread $thread
+     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\Post[]   $posts
+     * @param                    $page
+     * @param null|array         $postCounts
      *
      * @return ArrayCollection
      */
-    public function setPostsShowSignature(ArrayCollection $posts, $page, $postCounts = null)
+    public function setPostsShowSignature(\XF\Entity\Thread $thread, ArrayCollection $posts, $page, $postCounts = null)
     {
         if ($postCounts === null)
         {
-            $postCounts = $this->getPostCountsForSignatureOnce($posts, $page);
+            $postCounts = $this->getPostCountsForSignatureOnce($thread, $page);
         }
 
-        foreach ($postCounts AS $postId => $postCount)
+        foreach ($posts AS $postId => $post)
         {
-            $postIdInt = (int) utf8_substr($postId, utf8_strlen($this->columnPrefixForPostData));
-            if (isset($posts[$postIdInt]))
+            $showOncePerThread = $this->options()->showSignatureOncePerThread;
+            if ($showOncePerThread)
             {
-                $posts[$postIdInt]->setShowSignature($postCount === 0);
+                $showSignature = !isset($postCounts[$postId]);
             }
+            else
+            {
+                $showSignature = isset($postCounts[$postId]);
+            }
+
+            $posts[(int) $postId]->setShowSignature($showSignature);
         }
 
         return $posts;
     }
 
     /**
-     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\Post[] $posts
-     * @param int             $page
+     * @param \XF\Entity\Thread $thread
+     * @param                   $page
      *
-     * @return array|bool|false
+     * @return array
      */
-    public function getPostCountsForSignatureOnce(ArrayCollection $posts, $page)
+    public function getPostCountsForSignatureOnce(\XF\Entity\Thread $thread, $page)
     {
         $db = $this->app()->db();
-        $perThread = $this->options()->showSignatureOncePerThread;
         $perPage = $this->options()->messagesPerPage;
 
-        $queries = [];
-        foreach ($posts AS $post)
+        $start = ($page - 1) * $perPage;
+        $end = $start + $perPage;
+
+        $messageStates = ['visible'];
+        if ($thread->canViewDeletedPosts())
         {
-            if ($thread = $post->Thread)
-            {
-                /** @var \XF\Finder\Post $postFinder */
-                $postFinder = $this->finder('XF:Post');
-                $postFinder
-                    ->inThread($thread)
-                    ->applyVisibilityChecksInThread($thread)
-                    ->where('user_id', $post->user_id)
-                    ->where('position', '<', $post->position);
+            $messageStates[] = 'deleted';
+        }
+        if ($thread->canViewModeratedPosts())
+        {
+            $messageStates[] = 'moderated';
+        }
+        $messageStatesStr = $db->quote($messageStates);
+        $oncePerContent = 'post_tmp.position < post.position AND';
+        $groupBy = 'post_id';
 
-                if (!$perThread)
-                {
-                    $postFinder->whereSql('(FLOOR(' . $postFinder->columnSqlName('position') . "/{$perPage}) + 1) >= {$page}");
-                }
-
-                $queries[] = "({$postFinder->getQuery(['countOnly' => true])}) AS {$this->columnPrefixForPostData}{$post->post_id}";
-            }
+        if (!$this->options()->showSignatureOncePerThread)
+        {
+            $oncePerContent = '';
+            $groupBy = 'user_id';
         }
 
-        return $db->fetchRow('SELECT ' . implode(', ', $queries) . ' FROM xf_post LIMIT 1');
+        return $db->fetchPairs("
+            SELECT post.post_id, COUNT(*)
+            FROM xf_post AS post
+            INNER JOIN xf_post AS post_tmp ON 
+            (
+                  {$oncePerContent}
+                  post_tmp.user_id = post.user_id AND
+                  post_tmp.thread_id = post.thread_id
+            )
+            WHERE post.thread_id = ?
+              AND post_tmp.thread_id = ?
+              AND post.message_state IN ({$messageStatesStr})
+              AND post_tmp.message_state IN ({$messageStatesStr})
+              AND post.position >= ?
+              AND post.position < ?
+            GROUP BY post.{$groupBy}
+            ORDER BY post_id ASC
+            LIMIT ?
+        ", [$thread->thread_id, $thread->thread_id, $start, $end, $perPage]);
     }
 }

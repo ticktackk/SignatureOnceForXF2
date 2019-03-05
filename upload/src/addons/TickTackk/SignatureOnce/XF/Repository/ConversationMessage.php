@@ -14,73 +14,76 @@ use XF\Mvc\Entity\ArrayCollection;
 class ConversationMessage extends XFCP_ConversationMessage
 {
     /**
-     * @var string
-     */
-    protected $columnPrefixForPostData = 'convMsg_';
-
-    /**
-     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\ConversationMessage[] $conversationMessages
-     * @param int             $page
-     * @param null            $messageCounts
+     * @param \XF\Entity\ConversationMaster                                            $master
+     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\ConversationMessage[] $messages
+     * @param null|array                                                               $messageCounts
      *
      * @return ArrayCollection
      */
-    public function setConversationsShowSignature(ArrayCollection $conversationMessages, $page, $messageCounts = null)
+    public function setConversationsShowSignature(\XF\Entity\ConversationMaster $master, ArrayCollection $messages, $messageCounts = null)
     {
         if ($messageCounts === null)
         {
-            $messageCounts = $this->getMessageCountsForSignatureOnce($conversationMessages, $page);
+            $messageCounts = $this->getMessageCountsForSignatureOnce($master, $messages);
         }
 
-        foreach ($messageCounts AS $messageId => $messageCount)
+        foreach ($messages AS $conversationMessageId => $conversationMessage)
         {
-            $messageIdInt = (int) utf8_substr($messageId, utf8_strlen($this->columnPrefixForPostData));
-            if (isset($conversationMessages[$messageIdInt]))
+            $showOncePerConversation = $this->options()->showSignatureOncePerConversation;
+            if ($showOncePerConversation)
             {
-                $conversationMessages[$messageIdInt]->setShowSignature($messageCount === 0);
+                $showSignature = !isset($messageCounts[$conversationMessageId]);
             }
+            else
+            {
+                $showSignature = isset($messageCounts[$conversationMessageId]);
+            }
+            $messages[$conversationMessageId]->setShowSignature($showSignature);
         }
 
-        return $conversationMessages;
+        return $messages;
     }
 
     /**
-     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\ConversationMessage[] $conversationMessages
-     * @param int             $page
+     * @param \XF\Entity\ConversationMaster $master
+     * @param ArrayCollection|\TickTackk\SignatureOnce\XF\Entity\ConversationMessage[] $messages
      *
-     * @return array|bool|false
+     * @return array
      */
-    public function getMessageCountsForSignatureOnce(ArrayCollection $conversationMessages, $page)
+    public function getMessageCountsForSignatureOnce(\XF\Entity\ConversationMaster $master, ArrayCollection $messages)
     {
-        $db = $this->app()->db();
-        $perConversation = $this->options()->showSignatureOncePerConversation;
-        $perPage = $this->options()->messagesPerPage;
+        $db = $this->db();
 
-        $queries = [];
+        /** @var \TickTackk\SignatureOnce\XF\Entity\ConversationMessage $firstMessage */
+        $firstMessage = $messages->first();
 
-        /** @var \TickTackk\SignatureOnce\XF\Entity\ConversationMessage $firstConversationMessage */
-        $firstConversationMessage = $conversationMessages->first();
-        foreach ($conversationMessages AS $conversationMessage)
+        /** @var \TickTackk\SignatureOnce\XF\Entity\ConversationMessage $lastMessage */
+        $lastMessage = $messages->last();
+
+        $oncePerContent = 'conversation_message_tmp.message_id < conversation_message.message_id AND';
+        $groupBy = 'message_id';
+
+        if (!$this->options()->showSignatureOncePerConversation)
         {
-            if ($conversation = $conversationMessage->Conversation)
-            {
-                /** @var \XF\Finder\ConversationMessage $conversationMessageFinder */
-                $conversationMessageFinder = $this->finder('XF:ConversationMessage');
-                $conversationMessageFinder->inConversation($conversation)
-                    ->where('user_id', $conversationMessage->user_id)
-                    ->where('message_id', '<', $conversationMessage->message_id);
-
-                if (!$perConversation)
-                {
-                    $conversationMessageFinder
-                        ->where('message_id', '>=', $firstConversationMessage->message_id)
-                        ->limitByPage($page, $perPage);
-                }
-
-                $queries[] = "({$conversationMessageFinder->getQuery(['countOnly' => true])}) AS {$this->columnPrefixForPostData}{$conversationMessage->message_id}";
-            }
+            $oncePerContent = '';
+            $groupBy = 'user_id';
         }
 
-        return $db->fetchRow('SELECT ' . implode(', ', $queries) . ' FROM xf_conversation_message LIMIT 1');
+        return $db->fetchPairs("
+            SELECT conversation_message.message_id, COUNT(*)
+            FROM xf_conversation_message AS conversation_message
+            INNER JOIN xf_conversation_message AS conversation_message_tmp ON 
+            (
+                  {$oncePerContent}
+                  conversation_message_tmp.user_id = conversation_message.user_id AND 
+                  conversation_message_tmp.conversation_id = conversation_message.conversation_id
+            )
+            WHERE conversation_message.conversation_id = ?
+              AND conversation_message_tmp.conversation_id = ?
+              AND conversation_message.message_id >= ?
+              AND conversation_message.message_id < ?
+            GROUP BY conversation_message.{$groupBy}
+            ORDER BY message_id ASC
+        ", [$master->conversation_id, $master->conversation_id, $firstMessage->message_id, $lastMessage->message_id]);
     }
 }

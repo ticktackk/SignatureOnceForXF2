@@ -23,13 +23,14 @@ class Conversation extends XFCP_Conversation
     {
         $response = parent::actionView($params);
 
-        if ($response instanceof View && $messages = $response->getParam('messages'))
+        if ($response instanceof View && ($conversation = $response->getParam('conversation')) && ($messages = $response->getParam('messages')))
         {
             /** @var \TickTackk\SignatureOnce\XF\Repository\ConversationMessage $conversationMessageRepo */
             $conversationMessageRepo = $this->repository('XF:ConversationMessage');
+
             /** @noinspection PhpUndefinedFieldInspection */
             $page = $this->filterPage($params->page);
-            $messages = $conversationMessageRepo->setConversationsShowSignature($messages, $page);
+            $messages = $conversationMessageRepo->setConversationsShowSignature($conversation, $messages, $page);
             $response->setParam('messages', $messages);
         }
 
