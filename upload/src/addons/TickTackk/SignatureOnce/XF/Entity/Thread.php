@@ -2,9 +2,6 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
-use XF\Mvc\Entity\Entity;
-use XF\Mvc\Entity\Structure;
-
 /**
  * Class Thread
  * 
@@ -19,7 +16,7 @@ class Thread extends XFCP_Thread
      *
      * @return bool
      */
-    public function canBypassSignatureOnce(&$error = null)
+    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */&$error = null)
     {
         return \XF::visitor()->hasNodePermission($this->node_id, 'bypassSignatureOnce');
     }

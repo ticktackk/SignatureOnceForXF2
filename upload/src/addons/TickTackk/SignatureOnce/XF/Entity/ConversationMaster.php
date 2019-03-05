@@ -2,9 +2,6 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
-use XF\Mvc\Entity\Entity;
-use XF\Mvc\Entity\Structure;
-
 /**
  * Class ConversationMaster
  * 
