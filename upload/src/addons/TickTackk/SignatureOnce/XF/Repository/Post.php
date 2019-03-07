@@ -3,12 +3,12 @@
 namespace TickTackk\SignatureOnce\XF\Repository;
 
 use TickTackk\SignatureOnce\Entity\ContainerInterface;
+use TickTackk\SignatureOnce\Entity\ContentInterface as EntityContentInterface;
+use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
 use TickTackk\SignatureOnce\Repository\ContentInterface;
 use TickTackk\SignatureOnce\Repository\ContentTrait;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
-use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
-use TickTackk\SignatureOnce\Entity\ContentInterface as EntityContentInterface;
 
 /**
  * Class Post
@@ -20,21 +20,14 @@ class Post extends XFCP_Post implements ContentInterface
     use ContentTrait;
 
     /**
-     * @return bool
-     */
-    public function showSignatureOncePerPage()
-    {
-        return !$this->options()->showSignatureOncePerThread;
-    }
-
-    /**
      * @param Entity|ContainerInterface                                     $container
      * @param ArrayCollection|EntityContentTrait[]|EntityContentInterface[] $messages
      * @param int                                                           $page
      *
      * @return array
      */
-    public function getMessageCountsForSignatureOnce(/** @noinspection PhpUnusedParameterInspection */ ContainerInterface $container, ArrayCollection $messages, $page)
+    public function getMessageCountsForSignatureOnce(/** @noinspection PhpUnusedParameterInspection */
+        ContainerInterface $container, ArrayCollection $messages, $page)
     {
         $db = $this->app()->db();
 
@@ -52,34 +45,52 @@ class Post extends XFCP_Post implements ContentInterface
         {
             $messageStates[] = 'moderated';
         }
+
         $messageStatesStr = $db->quote($messageStates);
-        $oncePerContent = 'post_tmp.position < post.position AND';
-        $groupBy = 'post_id';
+        $containerId = $db->quote($container->thread_id);
+        $startQuoted = $db->quote($start);
+        $endQuoted = $db->quote($end);
 
         if ($this->showSignatureOncePerPage())
         {
-            $oncePerContent = '';
-            $groupBy = 'user_id';
+            $pageCondition = "AND post_tmp.position >= {$startQuoted}";
+        }
+        else
+        {
+            $pageCondition = 'AND post_tmp.position < post_main.position';
         }
 
         return $db->fetchPairs("
-            SELECT post.post_id, COUNT(*)
-            FROM xf_post AS post
-            INNER JOIN xf_post AS post_tmp ON 
+            SELECT
+                post_main.post_id,
+                (
+                  SELECT post_id 
+                  FROM xf_post AS post_tmp
+                  WHERE post_tmp.user_id = post_main.user_id
+                    {$pageCondition}
+                    AND post_tmp.position < post_main.position
+                    AND post_tmp.thread_id = {$containerId}
+                    AND post_tmp.message_state IN ({$messageStatesStr})
+                  ORDER BY post_tmp.post_id ASC
+                  LIMIT 1
+                ) AS previous_post_id
+            FROM
             (
-                  {$oncePerContent}
-                  post_tmp.user_id = post.user_id AND
-                  post_tmp.thread_id = post.thread_id
-            )
-            WHERE post.thread_id = ?
-              AND post_tmp.thread_id = ?
-              AND post.message_state IN ({$messageStatesStr})
-              AND post_tmp.message_state IN ({$messageStatesStr})
-              AND post.position >= ?
-              AND post.position < ?
-            GROUP BY post.{$groupBy}
-            ORDER BY post_id ASC
-            LIMIT ?
-        ", [$container->thread_id, $container->thread_id, $start, $end, $perPage]);
+                SELECT DISTINCT user_id, post_id, position
+                FROM xf_post AS post
+                WHERE post.thread_id = {$containerId}
+                  AND post.message_state IN ({$messageStatesStr})
+                  AND post.position >= {$startQuoted}
+                  AND post.position < {$endQuoted}
+            ) AS post_main
+        ");
+    }
+
+    /**
+     * @return bool
+     */
+    public function showSignatureOncePerPage()
+    {
+        return !$this->options()->showSignatureOncePerThread;
     }
 }

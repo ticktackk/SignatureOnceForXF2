@@ -20,7 +20,7 @@ interface ContentInterface
     /**
      * @param ContainerInterface $container
      * @param ArrayCollection    $messages
-     * @param int $page
+     * @param int                $page
      *
      * @return array
      */

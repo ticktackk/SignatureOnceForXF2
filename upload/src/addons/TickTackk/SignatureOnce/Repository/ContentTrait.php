@@ -2,11 +2,11 @@
 
 namespace TickTackk\SignatureOnce\Repository;
 
+use TickTackk\SignatureOnce\Entity\ContainerInterface;
+use TickTackk\SignatureOnce\Entity\ContentInterface as EntityContentInterface;
+use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
-use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
-use TickTackk\SignatureOnce\Entity\ContentInterface as EntityContentInterface;
-use TickTackk\SignatureOnce\Entity\ContainerInterface;
 
 /**
  * Trait ContentTrait
@@ -19,28 +19,20 @@ trait ContentTrait
      * @param Entity|ContainerInterface                                     $container
      * @param ArrayCollection|EntityContentTrait[]|EntityContentInterface[] $messages
      * @param int                                                           $page
-     * @param null                                                          $messageCounts
+     * @param null                                                          $messageIds
      *
      * @return ArrayCollection
      */
-    public function setShowSignature(ContainerInterface $container, ArrayCollection $messages, $page, $messageCounts = null)
+    public function setShowSignature(ContainerInterface $container, ArrayCollection $messages, $page, $messageIds = null)
     {
-        if ($messageCounts === null)
+        if ($messageIds === null)
         {
-            $messageCounts = $this->getMessageCountsForSignatureOnce($container, $messages, $page);
+            $messageIds = $this->getMessageCountsForSignatureOnce($container, $messages, $page);
         }
 
-        foreach ($messages AS $conversationMessageId => $conversationMessage)
+        foreach ($messages AS $messageId => $message)
         {
-            if ($this->showSignatureOncePerPage())
-            {
-                $showSignature = isset($messageCounts[$conversationMessageId]);
-            }
-            else
-            {
-                $showSignature = !isset($messageCounts[$conversationMessageId]);
-            }
-            $messages[$conversationMessageId]->setShowSignature($showSignature);
+            $messages[$messageId]->setShowSignature(empty($messageIds[$messageId]));
         }
 
         return $messages;
