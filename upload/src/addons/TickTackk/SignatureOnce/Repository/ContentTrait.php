@@ -31,6 +31,10 @@ trait ContentTrait
             $app = $this->app();
             $cache = $app->cache();
             $cacheId = 'tckSignatureOnce_' . $container->getEntityContentType() . '_' . $container->getEntityId();
+            if ($this->showSignatureOncePerPage())
+            {
+                $cacheId .= '_pp';
+            }
 
             if ($cache)
             {
