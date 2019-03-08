@@ -27,7 +27,21 @@ trait ContentTrait
     {
         if ($messageIds === null)
         {
-            $messageIds = $this->getMessageCountsForSignatureOnce($container, $messages, $page);
+            /** @var \XF\App $app */
+            $app = $this->app();
+            $cache = $app->cache();
+            $cacheId = 'tckSignatureOnce_' . $container->getEntityContentType() . '_' . $container->getEntityId();
+
+            if ($cache)
+            {
+                $messageIds = $cache->fetch($cacheId);
+            }
+
+            if (!$messageIds)
+            {
+                $messageIds = $this->getMessageCountsForSignatureOnce($container, $messages, $page);
+                $cache->save($cacheId, $messageIds, 300);
+            }
         }
 
         foreach ($messages AS $messageId => $message)
