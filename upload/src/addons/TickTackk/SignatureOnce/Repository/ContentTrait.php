@@ -44,7 +44,10 @@ trait ContentTrait
             if (!$messageIds)
             {
                 $messageIds = $this->getMessageCountsForSignatureOnce($container, $messages, $page);
-                $cache->save($cacheId, $messageIds, 120);
+                if ($cache)
+                {
+                    $cache->save($cacheId, $messageIds, 120);
+                }
             }
         }
 
