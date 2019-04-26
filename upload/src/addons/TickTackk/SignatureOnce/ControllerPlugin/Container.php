@@ -26,6 +26,12 @@ class Container extends AbstractPlugin
     {
         $container = $view->getParam($containerKey);
         $messages = $view->getParam($messagesKey);
+
+        if (!$container || !$messages || ($messages && !\count($messages)))
+        {
+            return;
+        }
+
         $page = (int) $page;
         if (!$page)
         {
