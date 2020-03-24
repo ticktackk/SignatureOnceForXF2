@@ -3,7 +3,7 @@
     "description": "Add post and thread argument for macro \"signature\" under \"message_macros\" template",
     "execution_order": 10,
     "enabled": true,
-    "action": "str_replace",
-    "find": "<xf:macro template=\"message_macros\" name=\"signature\" arg-user=\"{$post.User}\" />",
-    "replace": "<xf:macro template=\"message_macros\" name=\"signature\" arg-user=\"{$post.User}\" arg-content=\"{$post}\" />"
+    "action": "preg_replace",
+    "find": "#(<xf:macro template=\"message_macros\" name=\"signature\".*?)(\\/>)#si",
+    "replace": "$1arg-content=\"{$post}\"$2"
 }
