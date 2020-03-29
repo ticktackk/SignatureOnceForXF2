@@ -7,6 +7,7 @@ CHANGELOG
 - **Change:** Link to updated developer URL in `addon.json` (#2)
 - **Change:** Update support URL to GitHub issues in `addon.json` (#3)
 - **Change:** Remove dead Discord server link from `addon.json` (#4)
+- **Change:** Move template modification from simple search to regex (#7)
 
 ## 1.1.3 (`1010370`)
 
