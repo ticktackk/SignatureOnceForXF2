@@ -1,7 +1,7 @@
 CHANGELOG
 ==========================
 
-## 1.1.5 (`1010470`)
+## 1.1.5 (`1010570`)
 
 - **Fix:** Reference to non-existent variable in template modification (#11)
 
