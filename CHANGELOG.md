@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 1.1.5 (`1010470`)
+
+- **Fix:** Reference to non-existent variable in template modification (#11)
+
 ## 1.1.4 (`1010470`)
 
 - **New:** Added CHANGELOG.md (#9)
