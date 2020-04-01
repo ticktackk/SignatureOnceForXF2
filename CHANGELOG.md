@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 1.2.0 (`1020070`)
+
+- **Change:** Drop support for XenForo 2.1.6 or lower (#5)
+
 ## 1.1.5 (`1010570`)
 
 - **Fix:** Reference to non-existent variable in template modification (#11)
