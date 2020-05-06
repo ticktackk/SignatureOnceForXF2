@@ -21,4 +21,12 @@ class ConversationMaster extends XFCP_ConversationMaster implements ContainerInt
         $visitor = \XF::visitor();
         return $visitor->hasPermission('conversation', 'bypassSignatureOnce');
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLastModifiedTimestampForSignatureOnce(): int
+    {
+        return $this->last_message_date;
+    }
 }

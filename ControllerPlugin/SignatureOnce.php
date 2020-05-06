@@ -2,6 +2,7 @@
 
 namespace TickTackk\SignatureOnce\ControllerPlugin;
 
+use TickTackk\SignatureOnce\Entity\ContainerInterface as ContainerEntityInterface;
 use TickTackk\SignatureOnce\Entity\ContentTrait as ContentEntityTrait;
 use XF\App as BaseApp;
 use XF\ControllerPlugin\AbstractPlugin;
@@ -107,12 +108,12 @@ class SignatureOnce extends AbstractPlugin
     }
 
     /**
-     * @param Entity $container
+     * @param ContainerEntityInterface|Entity $container
      * @param ArrayCollection|Entity[]|ContentEntityTrait[] $messages
      *
      * @return int
      */
-    protected function calculateCurrentPageFromContainer(Entity $container, $messages) : int
+    protected function calculateCurrentPageFromContainer(ContainerEntityInterface $container, ArrayCollection $messages) : int
     {
         $methodName = 'calculateCurrentPageFrom' . PhpUtil::camelCase($container->getEntityContentType());
         if (!\method_exists($this, $methodName))
@@ -124,14 +125,12 @@ class SignatureOnce extends AbstractPlugin
     }
 
     /**
-     * @param Entity $container
+     * @param ContainerEntityInterface|Entity $container
      * @param ArrayCollection|ExtendedPostEntity[] $messages
      *
      * @return int
      */
-    protected function calculateCurrentPageFromThread(
-        /** @noinspection PhpUnusedParameterInspection */Entity $container, ArrayCollection $messages
-    ) : int
+    protected function calculateCurrentPageFromThread(ContainerEntityInterface $container, ArrayCollection $messages) : int
     {
         $perPage = $this->app()->options()->messagesPerPage;
         $lastPosition = \max($messages->pluckNamed('position'));
@@ -140,12 +139,12 @@ class SignatureOnce extends AbstractPlugin
     }
 
     /**
-     * @param Entity|ExtendedConversationMasterEntity $container
+     * @param ContainerEntityInterface|Entity|ExtendedConversationMasterEntity $container
      * @param ArrayCollection|ExtendedConversationMessageEntity[] $messages
      *
      * @return int
      */
-    protected function calculateCurrentPageFromConversation(Entity $container, ArrayCollection $messages) : int
+    protected function calculateCurrentPageFromConversation(ContainerEntityInterface $container, ArrayCollection $messages) : int
     {
         $perPage = $this->app()->options()->messagesPerPage;
         $lastDate = \max($messages->pluckNamed('message_date'));
@@ -159,31 +158,34 @@ class SignatureOnce extends AbstractPlugin
     }
 
     /**
+     * @param ContainerEntityInterface|Entity $container
      * @param string $query
      *
      * @return string
      */
-    protected function getCompleteContainerCountsQueryHash(string $query) : string
+    protected function getCompleteContainerCountsQueryHash(ContainerEntityInterface $container, string $query) : string
     {
-        return \md5($query);
+        return \md5($query . "\n" . $container->getLastModifiedTimestampForSignatureOnce());
     }
 
     /**
+     * @param ContainerEntityInterface|Entity $container
      * @param string $query
      *
      * @return string
      */
-    protected function getCompleteContainerCountsCacheKey(string $query) : string
+    protected function getCompleteContainerCountsCacheKey(ContainerEntityInterface $container, string $query) : string
     {
-        return 'tckSignatureOnce_' . $this->getCompleteContainerCountsQueryHash($query);
+        return 'tckSignatureOnce_' . $this->getCompleteContainerCountsQueryHash($container, $query);
     }
 
     /**
+     * @param ContainerEntityInterface|Entity $container
      * @param string $query
      *
      * @return array|null
      */
-    protected function getCompleteContainerCountsFromCache(string $query) :? array
+    protected function getCompleteContainerCountsFromCache(ContainerEntityInterface $container, string $query) :? array
     {
         $cache = $this->cache();
         if (!$cache)
@@ -191,21 +193,22 @@ class SignatureOnce extends AbstractPlugin
             return null;
         }
 
-        $cacheKey = $this->getCompleteContainerCountsCacheKey($query);
+        $cacheKey = $this->getCompleteContainerCountsCacheKey($container, $query);
         if (!$cache->contains($cacheKey))
         {
             return null;
         }
 
-        return $cache->fetch($this->getCompleteContainerCountsCacheKey($query));
+        return $cache->fetch($cacheKey);
     }
 
     /**
+     * @param ContainerEntityInterface $container
      * @param string $query
      * @param array $results
      * @param int $lifeTime
      */
-    protected function cacheCompleteContainerCounts(string $query, array $results, int $lifeTime = 3600) : void
+    protected function cacheCompleteContainerCounts(ContainerEntityInterface $container, string $query, array $results, int $lifeTime = 3600) : void
     {
         $cache = $this->cache();
         if (!$cache)
@@ -213,19 +216,19 @@ class SignatureOnce extends AbstractPlugin
             return;
         }
 
-        $cache->save($this->getCompleteContainerCountsCacheKey($query), $results, $lifeTime);
+        $cache->save($this->getCompleteContainerCountsCacheKey($container, $query), $results, $lifeTime);
     }
 
     /**
-     * @param Entity $container
-     * @param $messages
+     * @param ContainerEntityInterface|Entity $container
+     * @param ArrayCollection|ContentEntityTrait[] $messages
      * @param int $page
      *
      * @return array
      */
-    protected function getCompleteContainerCounts(Entity $container, $messages, int $page)
+    protected function getCompleteContainerCounts(ContainerEntityInterface $container, ArrayCollection $messages, int $page)
     {
-        $methodName = 'getComplete' . PhpUtil::camelCase($container->getEntityContentType()) . 'Counts';
+        $methodName = 'getComplete' . PhpUtil::camelCase($container->getEntityContentType()) . 'CountsQuery';
         if (!\method_exists($this, $methodName))
         {
             return [];
@@ -237,26 +240,26 @@ class SignatureOnce extends AbstractPlugin
             return [];
         }
 
-        $fromCache = $this->getCompleteContainerCountsFromCache($query);
+        $fromCache = $this->getCompleteContainerCountsFromCache($container, $query);
         if ($fromCache)
         {
             return $fromCache;
         }
 
         $results = $this->db()->fetchPairs($query);
-        $this->cacheCompleteContainerCounts($query, $results);
+        $this->cacheCompleteContainerCounts($container, $query, $results);
 
         return $results;
     }
 
     /**
-     * @param Entity|ExtendedThreadEntity $container
-     * @param ArrayCollection|Entity|ExtendedPostEntity|ExtendedPostEntity[] $messages
+     * @param ContainerEntityInterface|Entity|ExtendedThreadEntity $container
+     * @param ArrayCollection|ExtendedPostEntity[] $messages
      * @param int $page
      *
      * @return string
      */
-    protected function getCompleteThreadCounts(Entity $container, $messages, int $page) : string
+    protected function getCompleteThreadCountsQuery(ContainerEntityInterface $container, ArrayCollection $messages, int $page) : string
     {
         $perPage = $this->options()->messagesPerPage;
         $page = \max(1, $page);
@@ -299,18 +302,18 @@ class SignatureOnce extends AbstractPlugin
                 WHERE post.thread_id = {$containerId}
                   AND post.message_state IN ({$viewableStatesStr})
                   AND post.position >= {$startQuoted}
-                  AND post.position < {$endQuoted}
+                  AND post.position <= {$endQuoted}
             ) AS post_main";
     }
 
     /**
-     * @param Entity|ExtendedConversationMasterEntity $container
-     * @param ArrayCollection|ExtendedConversationMessageEntity[]|Entity|ExtendedConversationMessageEntity $messages
+     * @param ContainerEntityInterface|Entity|ExtendedConversationMasterEntity $container
+     * @param ArrayCollection|ExtendedConversationMessageEntity[] $messages
      * @param int $page
      *
      * @return string
      */
-    protected function getCompleteConversationCounts(Entity $container, $messages, int $page) : string
+    protected function getCompleteConversationCountsQuery(ContainerEntityInterface $container, ArrayCollection $messages, int $page) : string
     {
         $db = $this->db();
 
@@ -318,8 +321,8 @@ class SignatureOnce extends AbstractPlugin
          * @var ExtendedConversationMessageEntity $firstMessage
          * @var ExtendedConversationMessageEntity $lastMessage
          */
-        $firstMessage = $messages instanceof ArrayCollection ? $messages->first() : $container->FirstMessage;
-        $lastMessage = $messages instanceof ArrayCollection ? $messages->last() : $container->LastMessage;
+        $firstMessage = $messages->first();
+        $lastMessage = $messages->last();
 
         $containerId = $db->quote($container->conversation_id);
         $startQuoted = $db->quote($firstMessage->message_id);

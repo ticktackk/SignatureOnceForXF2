@@ -17,4 +17,9 @@ interface ContainerInterface
      * @return bool
      */
     public function canBypassSignatureOnce(Phrase &$error = null) : bool;
+
+    /**
+     * @return int
+     */
+    public function getLastModifiedTimestampForSignatureOnce() : int;
 }
