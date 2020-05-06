@@ -2,8 +2,8 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
-use TickTackk\SignatureOnce\Entity\ContentInterface;
 use TickTackk\SignatureOnce\Entity\ContentTrait;
+use TickTackk\SignatureOnce\XF\Entity\ConversationMaster as ConversationMasterEntity;
 
 /**
  * Class ConversationMessage
@@ -11,44 +11,17 @@ use TickTackk\SignatureOnce\Entity\ContentTrait;
  * @package TickTackk\SignatureOnce\XF\Entity
  *
  * RELATIONS
- * @property \TickTackk\SignatureOnce\XF\Entity\ConversationMaster Conversation
+ * @property ConversationMasterEntity Conversation
  */
-class ConversationMessage extends XFCP_ConversationMessage implements ContentInterface
+class ConversationMessage extends XFCP_ConversationMessage
 {
     use ContentTrait;
 
     /**
-     * @param null $error
-     *
-     * @return bool|null
+     * @inheritDoc
      */
-    public function canShowSignature(&$error = null)
+    protected function getContainerRelationNameForTckSignatureOnce(): string
     {
-        if (!$this->Conversation)
-        {
-            return false;
-        }
-
-        if ($this->canBypassSignatureOnce($error))
-        {
-            return true;
-        }
-
-        return $this->showSignature;
-    }
-
-    /**
-     * @param null $error
-     *
-     * @return bool
-     */
-    public function canBypassSignatureOnce(&$error = null)
-    {
-        if (!$conversation = $this->Conversation)
-        {
-            return false;
-        }
-
-        return $conversation->canBypassSignatureOnce($error);
+        return 'Conversation';
     }
 }

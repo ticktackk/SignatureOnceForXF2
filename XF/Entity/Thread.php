@@ -3,6 +3,7 @@
 namespace TickTackk\SignatureOnce\XF\Entity;
 
 use TickTackk\SignatureOnce\Entity\ContainerInterface;
+use XF\Phrase;
 
 /**
  * Class Thread
@@ -13,12 +14,11 @@ use TickTackk\SignatureOnce\Entity\ContainerInterface;
 class Thread extends XFCP_Thread implements ContainerInterface
 {
     /**
-     * @param null $error
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */&$error = null)
+    public function canBypassSignatureOnce(Phrase &$error = null) : bool
     {
-        return \XF::visitor()->hasNodePermission($this->node_id, 'bypassSignatureOnce');
+        $visitor = \XF::visitor();
+        return $visitor->hasNodePermission($this->node_id, 'bypassSignatureOnce');
     }
 }

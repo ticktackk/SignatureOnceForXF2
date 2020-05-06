@@ -2,6 +2,8 @@
 
 namespace TickTackk\SignatureOnce\Entity;
 
+use XF\Phrase;
+
 /**
  * Interface ContainerInterface
  *
@@ -10,9 +12,9 @@ namespace TickTackk\SignatureOnce\Entity;
 interface ContainerInterface
 {
     /**
-     * @param null $error
+     * @param Phrase|null $error
      *
      * @return bool
      */
-    public function canBypassSignatureOnce(&$error = null);
+    public function canBypassSignatureOnce(Phrase &$error = null) : bool;
 }

@@ -1,6 +1,0 @@
-{
-    "from_class": "XF\\Repository\\ConversationMessage",
-    "to_class": "TickTackk\\SignatureOnce\\XF\\Repository\\ConversationMessage",
-    "execute_order": 10,
-    "active": true
-}
