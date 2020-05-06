@@ -42,3 +42,9 @@ This add-on allows user signature to be shown only once per thread or once per p
 [TD]Bypass signature once[/TD]
 [/TR]
 [/TABLE]
+
+[SIZE=5][B]Funding[/B][/SIZE]
+This add-on was initially funded by [URL='https://xenforo.com/community/members/21/']Kevin[/URL]
+
+[SIZE=5][B]License[/B][/SIZE]
+This project is licensed under the MIT License - see the [URL='https://github.com/ticktackk/SignatureOnceForXF2/blob/master/LICENSE.md']LICENSE.md[/URL] file for details.

@@ -26,3 +26,13 @@ Permissions
 | ------------------------ | --------------------- |
 | Conversation permissions | Bypass signature once |
 | Forum permissions        | Bypass signature once |
+
+Funding
+-------
+
+This add-on was initially funded by [Kevin](https://xenforo.com/community/members/21/)
+
+License
+-------
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/ticktackk/SignatureOnceForXF2/blob/master/LICENSE.md) file for details.
