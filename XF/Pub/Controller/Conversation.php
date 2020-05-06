@@ -3,7 +3,11 @@
 namespace TickTackk\SignatureOnce\XF\Pub\Controller;
 
 use XF\Mvc\ParameterBag;
-use XF\Mvc\Reply\View;
+use XF\Mvc\Reply\View as ViewReply;
+use XF\Mvc\Reply\Error as ErrorReply;
+use XF\Mvc\Reply\Redirect as RedirectReply;
+use XF\ControllerPlugin\AbstractPlugin as AbstractControllerPlugin;
+use TickTackk\SignatureOnce\ControllerPlugin\SignatureOnce as SignatureOnceControllerPlugin;
 
 /**
  * Class Conversation
@@ -15,28 +19,50 @@ use XF\Mvc\Reply\View;
 class Conversation extends XFCP_Conversation
 {
     /**
-     * @param ParameterBag $params
+     * @param ParameterBag $parameterBag
      *
-     * @return View
+     * @return ViewReply
      */
-    public function actionView(ParameterBag $params)
+    public function actionView(ParameterBag $parameterBag)
     {
-        $response = parent::actionView($params);
+        $reply = parent::actionView($parameterBag);
 
-        if ($response instanceof View)
-        {
-            /** @var \TickTackk\SignatureOnce\ControllerPlugin\Container $containerPlugin */
-            $containerPlugin = $this->plugin('TickTackk\SignatureOnce:Container');
-            /** @noinspection PhpUndefinedFieldInspection */
-            $containerPlugin->setShowSignature(
-                $response,
-                'conversation',
-                'messages',
-                $this->filterPage($params->page),
-                'XF:ConversationMessage'
-            );
-        }
+        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
+        $signatureOnceControllerPlugin->setShowSignature(
+            $reply,
+            'conversation',
+            'messages',
+            'page'
+        );
 
-        return $response;
+        return $reply;
+    }
+
+    /**
+     * @param ParameterBag $parameterBag
+     *
+     * @return ErrorReply|RedirectReply|ViewReply
+     */
+    public function actionAddReply(ParameterBag $parameterBag)
+    {
+        $reply = parent::actionAddReply($parameterBag);
+
+        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
+        $signatureOnceControllerPlugin->setShowSignature(
+            $reply,
+            'conversation',
+            'messages',
+            null
+        );
+
+        return $reply;
+    }
+
+    /**
+     * @return AbstractControllerPlugin|SignatureOnceControllerPlugin
+     */
+    protected function getSignatureOnceControllerPlugin() : SignatureOnceControllerPlugin
+    {
+        return $this->plugin('TickTackk\SignatureOnce:SignatureOnce');
     }
 }

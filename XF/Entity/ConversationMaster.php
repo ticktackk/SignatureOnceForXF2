@@ -3,6 +3,7 @@
 namespace TickTackk\SignatureOnce\XF\Entity;
 
 use TickTackk\SignatureOnce\Entity\ContainerInterface;
+use XF\Phrase;
 
 /**
  * Class ConversationMaster
@@ -13,12 +14,19 @@ use TickTackk\SignatureOnce\Entity\ContainerInterface;
 class ConversationMaster extends XFCP_ConversationMaster implements ContainerInterface
 {
     /**
-     * @param null $error
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function canBypassSignatureOnce(/** @noinspection PhpUnusedParameterInspection */&$error = null)
+    public function canBypassSignatureOnce(Phrase &$error = null) : bool
     {
-        return \XF::visitor()->hasPermission('conversation', 'bypassSignatureOnce');
+        $visitor = \XF::visitor();
+        return $visitor->hasPermission('conversation', 'bypassSignatureOnce');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLastModifiedTimestampForSignatureOnce(): int
+    {
+        return $this->last_message_date;
     }
 }

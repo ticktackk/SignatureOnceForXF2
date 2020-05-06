@@ -2,8 +2,13 @@
 
 namespace TickTackk\SignatureOnce\XF\Pub\Controller;
 
+use TickTackk\SignatureOnce\ControllerPlugin\SignatureOnce as SignatureOnceControllerPlugin;
+use XF\ControllerPlugin\AbstractPlugin as AbstractControllerPlugin;
 use XF\Mvc\ParameterBag;
-use XF\Mvc\Reply\View;
+use XF\Mvc\Reply\View as ViewReply;
+use XF\Mvc\Reply\Error as ErrorReply;
+use XF\Mvc\Reply\Redirect as RedirectReply;
+use XF\Entity\Thread as ThreadEntity;
 
 /**
  * Class Thread
@@ -15,28 +20,47 @@ use XF\Mvc\Reply\View;
 class Thread extends XFCP_Thread
 {
     /**
-     * @param ParameterBag $params
+     * @param ParameterBag $parameterBag
      *
-     * @return View
+     * @return ErrorReply|RedirectReply|ViewReply
      */
-    public function actionIndex(ParameterBag $params)
+    public function actionIndex(ParameterBag $parameterBag)
     {
-        $response = parent::actionIndex($params);
+        $reply = parent::actionIndex($parameterBag);
 
-        if ($response instanceof View)
-        {
-            /** @var \TickTackk\SignatureOnce\ControllerPlugin\Container $containerPlugin */
-            $containerPlugin = $this->plugin('TickTackk\SignatureOnce:Container');
-            /** @noinspection PhpUndefinedFieldInspection */
-            $containerPlugin->setShowSignature(
-                $response,
-                'thread',
-                'posts',
-                $this->filterPage($params->page),
-                'XF:Post'
-            );
-        }
+        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
+        /** @noinspection PhpUndefinedFieldInspection */
+        $signatureOnceControllerPlugin->setShowSignature(
+            $reply,
+            'thread',
+            'posts',
+            $this->filterPage($parameterBag->page)
+        );
 
-        return $response;
+        return $reply;
+    }
+
+    /**
+     * @param ThreadEntity $thread
+     * @param int $lastDate
+     *
+     * @return ViewReply
+     */
+    protected function getNewPostsReply(ThreadEntity $thread, $lastDate)
+    {
+        $reply = parent::getNewPostsReply($thread, $lastDate);
+
+        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
+        $signatureOnceControllerPlugin->setShowSignature($reply, 'thread', 'posts', null);
+
+        return $reply;
+    }
+
+    /**
+     * @return AbstractControllerPlugin|SignatureOnceControllerPlugin
+     */
+    protected function getSignatureOnceControllerPlugin() : SignatureOnceControllerPlugin
+    {
+        return $this->plugin('TickTackk\SignatureOnce:SignatureOnce');
     }
 }

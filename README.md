@@ -1,21 +1,28 @@
-# SignatureOnceForXF2
+Signature Once for XenForo 2.1.0+
+=================================
 
-Allows user signature to be shown only once per thread or conversation.
+Description
+-----------
 
-## Options
-- Under Admin CP > Options > Threads, discussions and conversations
-  - Show user's signature once per thread
-  - Show user's signature once per conversation
+This add-on allows user signature to be shown only once per thread or once per page.
 
-## Permissions
-- Under Admin CP > Groups & permissions > [Usergroup]
-  - Forum permissions (supports node specific permissions)
-    - Bypass signature once
-  - Conversation permissions
-    - Bypass signature once
+Requirements
+------------
 
-## Funding
-This add-on was initially funded by [Kevin](https://xenforo.com/community/members/kevin.21/).
+- PHP 7.3.0+
 
-## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+Options
+-------
+
+| Group                                  | Name                                        | Description                                                         |
+| -------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------- |
+| Threads, discussions and conversations | Show user's signature once per conversation | If unchecked, user's signature will be only be shown once per page. |
+| Threads, discussions and conversations | Show user's signature once per thread       | If unchecked, user's signature will be only be shown once per page. |
+
+Permissions
+-----------
+
+| Group                    | Permission            |
+| ------------------------ | --------------------- |
+| Conversation permissions | Bypass signature once |
+| Forum permissions        | Bypass signature once |

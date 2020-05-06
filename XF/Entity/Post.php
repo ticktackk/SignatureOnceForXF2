@@ -2,8 +2,8 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
-use TickTackk\SignatureOnce\Entity\ContentInterface;
 use TickTackk\SignatureOnce\Entity\ContentTrait;
+use TickTackk\SignatureOnce\XF\Entity\Thread as ExtendedThreadEntity;
 
 /**
  * Class Post
@@ -11,44 +11,17 @@ use TickTackk\SignatureOnce\Entity\ContentTrait;
  * @package TickTackk\SignatureOnce
  *
  * RELATIONS
- * @property \TickTackk\SignatureOnce\XF\Entity\Thread Thread
+ * @property ExtendedThreadEntity Thread
  */
-class Post extends XFCP_Post implements ContentInterface
+class Post extends XFCP_Post
 {
     use ContentTrait;
 
     /**
-     * @param null $error
-     *
-     * @return bool|null
+     * @inheritDoc
      */
-    public function canShowSignature(&$error = null)
+    protected function getContainerRelationNameForTckSignatureOnce(): string
     {
-        if (!$this->Thread)
-        {
-            return false;
-        }
-
-        if ($this->canBypassSignatureOnce($error))
-        {
-            return true;
-        }
-
-        return $this->showSignature;
-    }
-
-    /**
-     * @param null|string $error
-     *
-     * @return bool
-     */
-    public function canBypassSignatureOnce(&$error = null)
-    {
-        if (!$thread = $this->Thread)
-        {
-            return false;
-        }
-
-        return $thread->canBypassSignatureOnce($error);
+        return 'Thread';
     }
 }

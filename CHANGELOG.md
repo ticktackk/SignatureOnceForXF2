@@ -1,6 +1,13 @@
 CHANGELOG
 ==========================
 
+## 1.2.0 (`1020070`)
+
+- **Change:** Drop support for XenForo 2.1.6 or lower (#5)
+- **Change:** Increase minimum PHP version requirement to 7.3 (#6)
+- **Improvement:** Refactor to improve code readability (#14)
+  - **Update:** Container per page content results will now be cached for an hour
+
 ## 1.1.5 (`1010570`)
 
 - **Fix:** Reference to non-existent variable in template modification (#11)
