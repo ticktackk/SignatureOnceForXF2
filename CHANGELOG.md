@@ -3,6 +3,7 @@ CHANGELOG
 
 ## 1.2.1 (`1020170`)
 
+- **Change:** Execution order of class extensions and template modifications does not match of resource id at XenForo.com (#22)
 - **Fix:** Incompatible with XenForo 2.2.x (#17)
 - **Fix:** "Show user's signature once per conversation" option is not respected (#18)
 - **Fix:** Current page not being calculated correctly when adding last message of conversation (#19)
