@@ -58,6 +58,21 @@ class Conversation extends XFCP_Conversation
         return $reply;
     }
 
+    public function actionMessagesEdit(ParameterBag $params)
+    {
+        $reply = parent::actionMessagesEdit($params);
+
+        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
+        $signatureOnceControllerPlugin->setShowSignature(
+            $reply,
+            'conversation',
+            'message',
+            null
+        );
+
+        return $reply;
+    }
+
     /**
      * @return AbstractControllerPlugin|SignatureOnceControllerPlugin
      */

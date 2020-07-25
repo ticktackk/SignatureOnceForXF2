@@ -71,6 +71,10 @@ class SignatureOnce extends AbstractPlugin
         {
             $messages = $messages->toArray();
         }
+        else if ($messages instanceof Entity)
+        {
+            $messages = [$messages->getEntityId() => $messages];
+        }
         else if (!\is_array($messages))
         {
             return;
