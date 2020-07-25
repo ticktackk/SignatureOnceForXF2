@@ -1,7 +1,7 @@
 {
     "template": "post_macros",
     "description": "Add post and thread argument for macro \"signature\" under \"message_macros\" template",
-    "execution_order": 10,
+    "execution_order": 6182,
     "enabled": true,
     "action": "preg_replace",
     "find": "#(<xf:macro template=\"message_macros\" name=\"signature\".*?)(\\/>)#si",

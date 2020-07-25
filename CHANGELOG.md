@@ -1,6 +1,16 @@
 CHANGELOG
 ==========================
 
+## 1.2.1 (`1020170`)
+
+- **Change:** Execution order of class extensions and template modifications does not match of resource id at XenForo.com (#22)
+- **Fix:** Incompatible with XenForo 2.2.x (#17)
+- **Fix:** "Show user's signature once per conversation" option is not respected (#18)
+- **Fix:** Current page not being calculated correctly when adding last message of conversation (#19)
+- **Fix:** Signature once status is not respected after adding message using quick reply (#20)
+- **Fix:** Inline editing message does not set show signature status correctly (#21)
+- **Misc:** General code clean up
+
 ## 1.2.0 (`1020070`)
 
 - **Change:** Drop support for XenForo 2.1.6 or lower (#5)

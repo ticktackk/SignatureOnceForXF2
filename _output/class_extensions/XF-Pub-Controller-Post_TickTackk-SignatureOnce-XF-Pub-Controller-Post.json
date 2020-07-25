@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Pub\\Controller\\Post",
+    "to_class": "TickTackk\\SignatureOnce\\XF\\Pub\\Controller\\Post",
+    "execute_order": 6182,
+    "active": true
+}

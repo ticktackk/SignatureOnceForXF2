@@ -14,5 +14,6 @@ namespace TickTackk\SignatureOnce\XF\Entity
 namespace TickTackk\SignatureOnce\XF\Pub\Controller
 {
 	class XFCP_Conversation extends \XF\Pub\Controller\Conversation {}
+	class XFCP_Post extends \XF\Pub\Controller\Post {}
 	class XFCP_Thread extends \XF\Pub\Controller\Thread {}
 }
