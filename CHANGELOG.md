@@ -4,6 +4,7 @@ CHANGELOG
 ## 1.2.1 (`1020170`)
 
 - **Fix:** Incompatible with XenForo 2.2.x (#17)
+- **Fix:** "Show user's signature once per conversation" option is not respected (#18)
 
 ## 1.2.0 (`1020070`)
 

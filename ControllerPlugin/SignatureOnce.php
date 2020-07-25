@@ -29,11 +29,21 @@ use Doctrine\Common\Cache\CacheProvider as CacheProvider;
 class SignatureOnce extends AbstractPlugin
 {
     /**
-     * @return bool
+     * @param ContainerEntityInterface|Entity $container
      */
-    public function isSignatureShownOncePerPage()
+    public function isSignatureShownOncePerPage(ContainerEntityInterface $container) :? bool
     {
-        return !$this->options()->showSignatureOncePerThread;
+        switch ($container->getEntityContentType())
+        {
+            case 'thread':
+                return !$this->options()->showSignatureOncePerThread;
+
+            case 'conversation':
+                return !$this->options()->showSignatureOncePerConversation;
+
+            default:
+                return null;
+        }
     }
 
     /**
@@ -83,7 +93,13 @@ class SignatureOnce extends AbstractPlugin
             $page = \max(1, $reply->getParam($pageKey));
         }
 
-        if ($this->isSignatureShownOncePerPage())
+        $isSignatureShownOncePerPage = $this->isSignatureShownOncePerPage($container);
+        if ($isSignatureShownOncePerPage === null)
+        {
+            return;
+        }
+
+        if ($isSignatureShownOncePerPage)
         {
             $userIdsFound = [];
 
