@@ -30,13 +30,20 @@ class Thread extends XFCP_Thread
     {
         $reply = parent::actionIndex($parameterBag);
 
+        $forceCacheSuffix = null;
+        if (\XF::$versionId >= 2020010)
+        {
+            $forceCacheSuffix = $reply->getParam('effectiveOrder');
+        }
+
         $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
         /** @noinspection PhpUndefinedFieldInspection */
         $signatureOnceControllerPlugin->setShowSignature(
             $reply,
             'thread',
             'posts',
-            $this->filterPage($parameterBag->page)
+            $this->filterPage($parameterBag->page),
+            $forceCacheSuffix
         );
 
         return $reply;

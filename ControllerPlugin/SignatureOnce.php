@@ -53,7 +53,7 @@ class SignatureOnce extends AbstractPlugin
      * @param string|ArrayCollection|Entity $messagesKey
      * @param string|int|null $pageKey
      */
-    public function setShowSignature(AbstractReply $reply, $containerKey, $messagesKey, $pageKey = 'page') : void
+    public function setShowSignature(AbstractReply $reply, $containerKey, $messagesKey, $pageKey = 'page', ?string $forceCacheKeySuffix = null) : void
     {
         if (!$reply instanceof ViewReply)
         {
@@ -110,7 +110,7 @@ class SignatureOnce extends AbstractPlugin
             $messages = $this->getAllMessagesInCurrentPageForContainer($container, $page, $perPage, $messages);
         }
 
-        $containerCounts = $this->getContainerCounts($container, $messages, $page);
+        $containerCounts = $this->getContainerCounts($container, $messages, $page, $forceCacheKeySuffix);
 
         /** @var Entity|ContentEntityTrait $message */
         foreach ($messages AS $message)
@@ -243,9 +243,16 @@ class SignatureOnce extends AbstractPlugin
      *
      * @return string
      */
-    protected function getContainerCountsCacheKey(ContainerEntityInterface $container, string $query) : string
+    protected function getContainerCountsCacheKey(ContainerEntityInterface $container, string $query, ?string $forceCacheKeySuffix = null) : string
     {
-        return 'tckSignatureOnce_' . $this->getContainerCountsQueryHash($container, $query);
+        $cacheKey = 'tckSignatureOnce_' . $this->getContainerCountsQueryHash($container, $query);
+
+        if (!empty($forceCacheKeySuffix))
+        {
+            $cacheKey .= '_' . $forceCacheKeySuffix;
+        }
+
+        return $cacheKey;
     }
 
     /**
@@ -254,7 +261,7 @@ class SignatureOnce extends AbstractPlugin
      *
      * @return array|null
      */
-    protected function getContainerCountsFromCache(ContainerEntityInterface $container, string $query) :? array
+    protected function getContainerCountsFromCache(ContainerEntityInterface $container, string $query, ?string $forceCacheKeySuffix = null) :? array
     {
         $cache = $this->cache();
         if (!$cache)
@@ -262,7 +269,7 @@ class SignatureOnce extends AbstractPlugin
             return null;
         }
 
-        $cacheKey = $this->getContainerCountsCacheKey($container, $query);
+        $cacheKey = $this->getContainerCountsCacheKey($container, $query, $forceCacheKeySuffix);
         if (!$cache->contains($cacheKey))
         {
             return null;
@@ -277,7 +284,7 @@ class SignatureOnce extends AbstractPlugin
      * @param array $results
      * @param int $lifeTime
      */
-    protected function cacheContainerCounts(ContainerEntityInterface $container, string $query, array $results, int $lifeTime = 3600) : void
+    protected function cacheContainerCounts(ContainerEntityInterface $container, string $query, array $results, int $lifeTime = 3600, ?string $forceCacheKeySuffix = null) : void
     {
         $cache = $this->cache();
         if (!$cache)
@@ -285,7 +292,7 @@ class SignatureOnce extends AbstractPlugin
             return;
         }
 
-        $cache->save($this->getContainerCountsCacheKey($container, $query), $results, $lifeTime);
+        $cache->save($this->getContainerCountsCacheKey($container, $query, $forceCacheKeySuffix), $results, $lifeTime);
     }
 
     /**
@@ -295,7 +302,7 @@ class SignatureOnce extends AbstractPlugin
      *
      * @return array
      */
-    protected function getContainerCounts(ContainerEntityInterface $container, $messages, int $page)
+    protected function getContainerCounts(ContainerEntityInterface $container, array $messages, int $page, ?string $forceCacheKeySuffix)
     {
         $methodName = 'get' . PhpUtil::camelCase($container->getEntityContentType()) . 'CountsQuery';
         if (!\method_exists($this, $methodName))
@@ -309,7 +316,7 @@ class SignatureOnce extends AbstractPlugin
             return [];
         }
 
-        $fromCache = $this->getContainerCountsFromCache($container, $query);
+        $fromCache = $this->getContainerCountsFromCache($container, $query, $forceCacheKeySuffix);
         if ($fromCache)
         {
             return $fromCache;
