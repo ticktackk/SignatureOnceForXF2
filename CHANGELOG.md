@@ -5,6 +5,7 @@ CHANGELOG
 
 - **Fix:** Incompatible with XenForo 2.2.x (#17)
 - **Fix:** "Show user's signature once per conversation" option is not respected (#18)
+- **Fix:** Current page not being calculated correctly when adding last message of conversation (#19)
 
 ## 1.2.0 (`1020070`)
 

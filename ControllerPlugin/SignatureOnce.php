@@ -171,7 +171,7 @@ class SignatureOnce extends AbstractPlugin
 
         $conversationMessageRepo = $this->getConversationMessageRepo();
         $conversationMessageTotal = $conversationMessageRepo->findMessagesForConversationView($container)
-            ->where('message_date', '<=', $lastDate)
+            ->where('message_date', '<', $lastDate)
             ->total();
 
         return \floor($conversationMessageTotal / $perPage) + 1;
