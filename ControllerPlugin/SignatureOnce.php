@@ -56,7 +56,11 @@ class SignatureOnce extends AbstractPlugin
         }
 
         $messages = $reply->getParam($messagesKey);
-        if (!$messages instanceof ArrayCollection)
+        if ($messages instanceof ArrayCollection)
+        {
+            $messages = $messages->toArray();
+        }
+        else if (!\is_array($messages))
         {
             return;
         }
@@ -109,11 +113,11 @@ class SignatureOnce extends AbstractPlugin
 
     /**
      * @param ContainerEntityInterface|Entity $container
-     * @param ArrayCollection|Entity[]|ContentEntityTrait[] $messages
+     * @param ArrayCollection|array|Entity[]|ContentEntityTrait[] $messages
      *
      * @return int
      */
-    protected function calculateCurrentPageFromContainer(ContainerEntityInterface $container, ArrayCollection $messages) : int
+    protected function calculateCurrentPageFromContainer(ContainerEntityInterface $container, $messages) : int
     {
         $methodName = 'calculateCurrentPageFrom' . PhpUtil::camelCase($container->getEntityContentType());
         if (!\method_exists($this, $methodName))
@@ -126,28 +130,28 @@ class SignatureOnce extends AbstractPlugin
 
     /**
      * @param ContainerEntityInterface|Entity $container
-     * @param ArrayCollection|ExtendedPostEntity[] $messages
+     * @param ArrayCollection|array|ExtendedPostEntity[] $messages
      *
      * @return int
      */
-    protected function calculateCurrentPageFromThread(ContainerEntityInterface $container, ArrayCollection $messages) : int
+    protected function calculateCurrentPageFromThread(ContainerEntityInterface $container, $messages) : int
     {
         $perPage = $this->app()->options()->messagesPerPage;
-        $lastPosition = \max($messages->pluckNamed('position'));
+        $lastPosition = \max(\array_column($messages, 'position'));
 
         return (int) \max(1, \ceil($lastPosition / $perPage));
     }
 
     /**
      * @param ContainerEntityInterface|Entity|ExtendedConversationMasterEntity $container
-     * @param ArrayCollection|ExtendedConversationMessageEntity[] $messages
+     * @param ArrayCollection|array|ExtendedConversationMessageEntity[] $messages
      *
      * @return int
      */
-    protected function calculateCurrentPageFromConversation(ContainerEntityInterface $container, ArrayCollection $messages) : int
+    protected function calculateCurrentPageFromConversation(ContainerEntityInterface $container, $messages) : int
     {
         $perPage = $this->app()->options()->messagesPerPage;
-        $lastDate = \max($messages->pluckNamed('message_date'));
+        $lastDate = \max(\array_column($messages, 'message_date'));
 
         $conversationMessageRepo = $this->getConversationMessageRepo();
         $conversationMessageTotal = $conversationMessageRepo->findMessagesForConversationView($container)
@@ -221,12 +225,12 @@ class SignatureOnce extends AbstractPlugin
 
     /**
      * @param ContainerEntityInterface|Entity $container
-     * @param ArrayCollection|ContentEntityTrait[] $messages
+     * @param ArrayCollection|array|ContentEntityTrait[] $messages
      * @param int $page
      *
      * @return array
      */
-    protected function getCompleteContainerCounts(ContainerEntityInterface $container, ArrayCollection $messages, int $page)
+    protected function getCompleteContainerCounts(ContainerEntityInterface $container, $messages, int $page)
     {
         $methodName = 'getComplete' . PhpUtil::camelCase($container->getEntityContentType()) . 'CountsQuery';
         if (!\method_exists($this, $methodName))
@@ -254,12 +258,12 @@ class SignatureOnce extends AbstractPlugin
 
     /**
      * @param ContainerEntityInterface|Entity|ExtendedThreadEntity $container
-     * @param ArrayCollection|ExtendedPostEntity[] $messages
+     * @param ArrayCollection|array|ExtendedPostEntity[] $messages
      * @param int $page
      *
      * @return string
      */
-    protected function getCompleteThreadCountsQuery(ContainerEntityInterface $container, ArrayCollection $messages, int $page) : string
+    protected function getCompleteThreadCountsQuery(ContainerEntityInterface $container, $messages, int $page) : string
     {
         $perPage = $this->options()->messagesPerPage;
         $page = \max(1, $page);
@@ -308,12 +312,12 @@ class SignatureOnce extends AbstractPlugin
 
     /**
      * @param ContainerEntityInterface|Entity|ExtendedConversationMasterEntity $container
-     * @param ArrayCollection|ExtendedConversationMessageEntity[] $messages
+     * @param ArrayCollection|array|ExtendedConversationMessageEntity[] $messages
      * @param int $page
      *
      * @return string
      */
-    protected function getCompleteConversationCountsQuery(ContainerEntityInterface $container, ArrayCollection $messages, int $page) : string
+    protected function getCompleteConversationCountsQuery(ContainerEntityInterface $container, $messages, int $page) : string
     {
         $db = $this->db();
 
@@ -321,8 +325,8 @@ class SignatureOnce extends AbstractPlugin
          * @var ExtendedConversationMessageEntity $firstMessage
          * @var ExtendedConversationMessageEntity $lastMessage
          */
-        $firstMessage = $messages->first();
-        $lastMessage = $messages->last();
+        $firstMessage = \reset($messages);
+        $lastMessage = \end($messages);
 
         $containerId = $db->quote($container->conversation_id);
         $startQuoted = $db->quote($firstMessage->message_id);

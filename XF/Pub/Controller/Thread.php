@@ -4,6 +4,8 @@ namespace TickTackk\SignatureOnce\XF\Pub\Controller;
 
 use TickTackk\SignatureOnce\ControllerPlugin\SignatureOnce as SignatureOnceControllerPlugin;
 use XF\ControllerPlugin\AbstractPlugin as AbstractControllerPlugin;
+use XF\Entity\Post as PostEntity;
+use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\ParameterBag;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Mvc\Reply\Error as ErrorReply;
@@ -50,8 +52,24 @@ class Thread extends XFCP_Thread
     {
         $reply = parent::getNewPostsReply($thread, $lastDate);
 
-        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
-        $signatureOnceControllerPlugin->setShowSignature($reply, 'thread', 'posts', null);
+        if (\XF::$versionId < 2020010)
+        {
+            $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
+            $signatureOnceControllerPlugin->setShowSignature($reply, 'thread', 'posts', null);
+        }
+
+        return $reply;
+    }
+
+    protected function getNewPostsReplyInternal(ThreadEntity $thread, AbstractCollection $posts, PostEntity $firstUnshownPost = null)
+    {
+        $reply = parent::getNewPostsReplyInternal($thread, $posts, $firstUnshownPost);
+
+        if (\XF::$versionId >= 2020010)
+        {
+            $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
+            $signatureOnceControllerPlugin->setShowSignature($reply, 'thread', 'posts', null);
+        }
 
         return $reply;
     }

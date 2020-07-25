@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 1.2.1 (`1020170`)
+
+- **Fix:** Incompatible with XenForo 2.2.x (#17)
+
 ## 1.2.0 (`1020070`)
 
 - **Change:** Drop support for XenForo 2.1.6 or lower (#5)
