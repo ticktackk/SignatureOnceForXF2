@@ -50,6 +50,7 @@ class Thread extends XFCP_Thread
      */
     protected function getNewPostsReply(ThreadEntity $thread, $lastDate)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $reply = parent::getNewPostsReply($thread, $lastDate);
 
         if (\XF::$versionId < 2020010)
@@ -61,6 +62,9 @@ class Thread extends XFCP_Thread
         return $reply;
     }
 
+    /**
+     * @since XenForo 2.2
+     */
     protected function getNewPostsReplyInternal(ThreadEntity $thread, AbstractCollection $posts, PostEntity $firstUnshownPost = null)
     {
         $reply = parent::getNewPostsReplyInternal($thread, $posts, $firstUnshownPost);

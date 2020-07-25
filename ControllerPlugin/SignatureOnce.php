@@ -201,7 +201,7 @@ class SignatureOnce extends AbstractPlugin
      *
      * @return int
      */
-    protected function calculateCurrentPageFromThread(ContainerEntityInterface $container, array $messages, int $perPage) : int
+    protected function calculateCurrentPageFromThread(/** @noinspection PhpUnusedParameterInspection */ContainerEntityInterface $container, array $messages, int $perPage) : int
     {
         $lastPosition = \max(\array_column($messages, 'position'));
 
@@ -328,7 +328,7 @@ class SignatureOnce extends AbstractPlugin
      *
      * @return string
      */
-    protected function getThreadCountsQuery(ContainerEntityInterface $container, array $messages, int $page) : string
+    protected function getThreadCountsQuery(ContainerEntityInterface $container, /** @noinspection PhpUnusedParameterInspection */array $messages, int $page) : string
     {
         $perPage = $this->options()->messagesPerPage;
         $page = \max(1, $page);
@@ -392,7 +392,7 @@ class SignatureOnce extends AbstractPlugin
      *
      * @return string
      */
-    protected function getConversationCountsQuery(ContainerEntityInterface $container, array $messages, int $page) : string
+    protected function getConversationCountsQuery(ContainerEntityInterface $container, array $messages, /** @noinspection PhpUnusedParameterInspection */int $page) : string
     {
         $db = $this->db();
 
@@ -409,7 +409,7 @@ class SignatureOnce extends AbstractPlugin
 
         if ($this->isSignatureShownOncePerPage($container))
         {
-            $pageCondition = "AND conversation_message_tmp.message_id >= {$startQuoted}";;
+            $pageCondition = "AND conversation_message_tmp.message_id >= {$startQuoted}";
         }
         else
         {
