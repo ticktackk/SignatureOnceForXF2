@@ -114,7 +114,9 @@ class SignatureOnce extends AbstractPlugin
             $messageId = $message->getEntityId();
             if (\array_key_exists($messageId, $containerCounts))
             {
-                $message->setShowSignature($containerCounts[$messageId] === $messageId);
+                $message->setShowSignature(
+                    $containerCounts[$messageId] === $messageId || $containerCounts[$messageId] === null
+                );
             }
         }
     }
