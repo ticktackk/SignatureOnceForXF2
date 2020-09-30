@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 1.2.2 (`1020270`)
+
+- **Fix:** Thread action reply type is not checked before calling `getParam()` (#24)
+
 ## 1.2.1 (`1020170`)
 
 - **Change:** Execution order of class extensions and template modifications does not match of resource id at XenForo.com (#22)
