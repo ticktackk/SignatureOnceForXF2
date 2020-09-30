@@ -31,7 +31,7 @@ class Thread extends XFCP_Thread
         $reply = parent::actionIndex($parameterBag);
 
         $forceCacheSuffix = null;
-        if (\XF::$versionId >= 2020010)
+        if ($reply instanceof ViewReply && \XF::$versionId >= 2020010)
         {
             $forceCacheSuffix = $reply->getParam('effectiveOrder');
         }
