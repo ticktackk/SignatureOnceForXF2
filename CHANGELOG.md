@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 1.2.3 (`1020370`)
+
+- **Fix:** Lower requirement for PHP to version 7.1 (#26)
+
 ## 1.2.2 (`1020270`)
 
 - **Fix:** Thread action reply type is not checked before calling `getParam()` (#24)
