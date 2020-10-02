@@ -317,7 +317,7 @@ class SignatureOnce extends AbstractPlugin
         }
 
         $fromCache = $this->getContainerCountsFromCache($container, $query, $forceCacheKeySuffix);
-        if ($fromCache)
+        if ($fromCache && \is_array($fromCache))
         {
             return $fromCache;
         }
