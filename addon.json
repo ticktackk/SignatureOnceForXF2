@@ -5,12 +5,10 @@
     "version_id": 2000011,
     "version_string": "2.0.0 Alpha 1",
     "dev": "TickTackk",
-    "dev_url": "https://xenforo.com/community/members/ticktackk.90375/",
+    "dev_url": "https://xenforo.com/community/members/90375/",
     "faq_url": "",
     "support_url": "https://github.com/ticktackk/SignatureOnceForXF2/issues",
-    "extra_urls": {
-        "Twitter": "https://twitter.com/t1cktackk"
-    },
+    "extra_urls": [],
     "require": {
         "XF": [
             2010070,
