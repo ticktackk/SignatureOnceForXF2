@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Service\\Thread\\Merger",
+    "to_class": "TickTackk\\SignatureOnce\\XF\\Service\\Thread\\Merger",
+    "execute_order": 10,
+    "active": true
+}

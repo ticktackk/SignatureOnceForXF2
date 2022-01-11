@@ -7,53 +7,48 @@ use XF\ControllerPlugin\AbstractPlugin as AbstractControllerPlugin;
 use XF\Entity\Post as PostEntity;
 use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Mvc\Reply\Error as ErrorReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Entity\Thread as ThreadEntity;
 
 /**
- * Class Thread
- *
- * Extends \XF\Pub\Controller\Thread
- *
- * @package TickTackk\SignatureOnce\XF\Pub\Controller
+ * @since 2.0.0 Alpha 1
  */
 class Thread extends XFCP_Thread
 {
     /**
-     * @param ParameterBag $parameterBag
+     * @version  2.0.0 Alpha 1
      *
-     * @return ErrorReply|RedirectReply|ViewReply
+     * @param ParameterBag $params
+     *
+     * @return AbstractReply|ErrorReply|RedirectReply|ViewReply
      */
-    public function actionIndex(ParameterBag $parameterBag)
+    public function actionIndex(ParameterBag $params)
     {
-        $reply = parent::actionIndex($parameterBag);
+        $reply = parent::actionIndex($params);
 
-        $forceCacheSuffix = null;
-        if ($reply instanceof ViewReply && \XF::$versionId >= 2020010)
-        {
-            $forceCacheSuffix = $reply->getParam('effectiveOrder');
-        }
-
-        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
-        /** @noinspection PhpUndefinedFieldInspection */
-        $signatureOnceControllerPlugin->setShowSignature(
+        $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
             'thread',
             'posts',
-            $this->filterPage($parameterBag->page),
-            $forceCacheSuffix
+            $this->filterPage($params->get('page'))
         );
 
         return $reply;
     }
 
     /**
+     * @version  2.0.0 Alpha 1
+     *
      * @param ThreadEntity $thread
      * @param int $lastDate
      *
      * @return ViewReply
+     *
+     * @noinspection PhpMissingParamTypeInspection
+     * @noinspection PhpMissingReturnTypeInspection
      */
     protected function getNewPostsReply(ThreadEntity $thread, $lastDate)
     {
@@ -62,8 +57,12 @@ class Thread extends XFCP_Thread
 
         if (\XF::$versionId < 2020010)
         {
-            $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
-            $signatureOnceControllerPlugin->setShowSignature($reply, 'thread', 'posts', null);
+            $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
+                $reply,
+                'thread',
+                'posts',
+                null
+            );
         }
 
         return $reply;
@@ -71,6 +70,8 @@ class Thread extends XFCP_Thread
 
     /**
      * @since XenForo 2.2
+     * @version  2.0.0 Alpha 1
+     * @noinspection PhpMissingReturnTypeInspection
      */
     protected function getNewPostsReplyInternal(ThreadEntity $thread, AbstractCollection $posts, PostEntity $firstUnshownPost = null)
     {
@@ -78,8 +79,12 @@ class Thread extends XFCP_Thread
 
         if (\XF::$versionId >= 2020010)
         {
-            $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
-            $signatureOnceControllerPlugin->setShowSignature($reply, 'thread', 'posts', null);
+            $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
+                $reply,
+                'thread',
+                'posts',
+                null
+            );
         }
 
         return $reply;

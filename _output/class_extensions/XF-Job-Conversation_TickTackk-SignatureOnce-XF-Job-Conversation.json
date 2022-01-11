@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Job\\Conversation",
+    "to_class": "TickTackk\\SignatureOnce\\XF\\Job\\Conversation",
+    "execute_order": 10,
+    "active": true
+}

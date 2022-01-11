@@ -5,21 +5,28 @@ namespace TickTackk\SignatureOnce\XF\Pub\Controller;
 use TickTackk\SignatureOnce\ControllerPlugin\SignatureOnce as SignatureOnceControllerPlugin;
 use XF\ControllerPlugin\AbstractPlugin as AbstractControllerPlugin;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\Error as ErrorReply;
 
+/**
+ * @version 2.0.0 Alpha 1
+ */
 class Post extends XFCP_Post
 {
     /**
-     * @return ErrorReply|RedirectReply|ViewReply
+     * @version 2.0.0 Alpha 1
+     *
+     * @param ParameterBag $params
+     *
+     * @return AbstractReply|ErrorReply|RedirectReply|ViewReply
      */
-    public function actionEdit(ParameterBag $parameterBag)
+    public function actionEdit(ParameterBag $params)
     {
-        $reply = parent::actionEdit($parameterBag);
+        $reply = parent::actionEdit($params);
 
-        $signatureOnceControllerPlugin = $this->getSignatureOnceControllerPlugin();
-        $signatureOnceControllerPlugin->setShowSignature(
+        $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
             'thread',
             'post',
