@@ -1,6 +1,6 @@
 {
     "from_class": "XF\\Service\\Post\\Mover",
     "to_class": "TickTackk\\SignatureOnce\\XF\\Service\\Post\\Mover",
-    "execute_order": 10,
+    "execute_order": 6182,
     "active": true
 }

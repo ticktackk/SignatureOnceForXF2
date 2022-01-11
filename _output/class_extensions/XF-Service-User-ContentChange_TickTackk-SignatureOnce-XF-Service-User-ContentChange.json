@@ -1,6 +1,6 @@
 {
     "from_class": "XF\\Service\\User\\ContentChange",
     "to_class": "TickTackk\\SignatureOnce\\XF\\Service\\User\\ContentChange",
-    "execute_order": 10,
+    "execute_order": 6182,
     "active": true
 }
