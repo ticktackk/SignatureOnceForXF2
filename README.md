@@ -16,10 +16,10 @@ Options
 
 #### Threads, discussions and conversations
 
-| Name                                        | Description                                                         |
-| ------------------------------------------- | ------------------------------------------------------------------- |
+| Name | Description |
+|---|---|
 | Show user's signature once per conversation | If unchecked, user's signature will be only be shown once per page. |
-| Show user's signature once per thread       | If unchecked, user's signature will be only be shown once per page. |
+| Show user's signature once per thread | If unchecked, user's signature will be only be shown once per page. |
 
 Permissions
 -----------
