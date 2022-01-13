@@ -39,8 +39,6 @@ class MySql
     {
         $tables = [];
 
-
-
         return $tables;
     }
 

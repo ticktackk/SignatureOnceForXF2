@@ -37,8 +37,6 @@ class Setup extends AbstractSetup
         }
     }
 
-
-
     public function uninstallStep1() : void
     {
         $sm = $this->schemaManager();
