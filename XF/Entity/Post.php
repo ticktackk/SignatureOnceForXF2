@@ -3,9 +3,8 @@
 namespace TickTackk\SignatureOnce\XF\Entity;
 
 use TickTackk\SignatureOnce\Entity\ContainerFirstUserContent as ContainerFirstUserContentEntity;
-use TickTackk\SignatureOnce\Entity\ContainerInterface as ContainerEntityInterface;
-use TickTackk\SignatureOnce\Entity\ContentInterface as ContentEntityInterface;
 use TickTackk\SignatureOnce\Entity\ContentTrait as ContentEntityTrait;
+use TickTackk\SignatureOnce\Entity\SignatureOnceTrait;
 use TickTackk\SignatureOnce\XF\Entity\Thread as ExtendedThreadEntity;
 use XF\Mvc\Entity\Structure as EntityStructure;
 
@@ -16,72 +15,36 @@ use XF\Mvc\Entity\Structure as EntityStructure;
  * @property ExtendedThreadEntity Thread
  * @property ContainerFirstUserContentEntity ThreadFirstUserPost
  */
-class Post extends XFCP_Post implements ContentEntityInterface
+class Post extends XFCP_Post
 {
-    use ContentEntityTrait;
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerTypeForTckSignatureOnce() : string
-    {
-        return 'thread';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerForTckSignatureOnce(): ?ContainerEntityInterface
-    {
-        return $this->Thread;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerFirstUserContentForTckSignatureOnce(): ?ContainerFirstUserContentEntity
-    {
-        return $this->ThreadFirstUserPost;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerIdFroTckSignatureOnce(): int
-    {
-        return $this->thread_id;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContentDateForTckSignatureOnce(): int
-    {
-        return $this->post_date;
-    }
+    use ContentEntityTrait, SignatureOnceTrait;
 
     /**
      * @since 2.0.0 Alpha 1
      *
      * @return void
+     *
+     * @throws \Exception
      */
     protected function postInsertedVisible()
     {
         parent::postInsertedVisible();
 
-        $this->adjustContainerFirstUserContentRecordForTckSignatureOnce();
+        $this->getHandlerForTckSignatureOnce('post')->adjustContainerFirstUserContentRecord($this);
     }
 
     /**
      * @since 2.0.0 Alpha 1
      *
      * @return void
+     *
+     * @throws \Exception
      */
     protected function postMadeVisible()
     {
         parent::postMadeVisible();
 
-        $this->adjustContainerFirstUserContentRecordForTckSignatureOnce();
+        $this->getHandlerForTckSignatureOnce('post')->adjustContainerFirstUserContentRecord($this);
     }
 
     /**
@@ -90,12 +53,14 @@ class Post extends XFCP_Post implements ContentEntityInterface
      * @param bool $hardDelete
      *
      * @return void
+     *
+     * @throws \Exception
      */
     protected function postHidden($hardDelete = false)
     {
         parent::postHidden($hardDelete);
 
-        $this->adjustContainerFirstUserContentRecordForTckSignatureOnce(false);
+        $this->getHandlerForTckSignatureOnce('post')->adjustContainerFirstUserContentRecord($this);
     }
 
     /**

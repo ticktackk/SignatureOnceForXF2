@@ -3,9 +3,8 @@
 namespace TickTackk\SignatureOnce\XF\Entity;
 
 use TickTackk\SignatureOnce\Entity\ContainerFirstUserContent as ContainerFirstUserContentEntity;
-use TickTackk\SignatureOnce\Entity\ContainerInterface as ContainerEntityInterface;
-use TickTackk\SignatureOnce\Entity\ContentInterface as ContentEntityInterface;
 use TickTackk\SignatureOnce\Entity\ContentTrait as ContentEntityTrait;
+use TickTackk\SignatureOnce\Entity\SignatureOnceTrait;
 use TickTackk\SignatureOnce\XF\Entity\ConversationMaster as ConversationMasterEntity;
 use XF\Mvc\Entity\Structure as EntityStructure;
 
@@ -16,72 +15,36 @@ use XF\Mvc\Entity\Structure as EntityStructure;
  * @property ConversationMasterEntity Conversation
  * @property ContainerFirstUserContentEntity ConversationFirstUserMessage
  */
-class ConversationMessage extends XFCP_ConversationMessage implements ContentEntityInterface
+class ConversationMessage extends XFCP_ConversationMessage
 {
-    use ContentEntityTrait;
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerForTckSignatureOnce(): ?ContainerEntityInterface
-    {
-        return $this->Conversation;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerFirstUserContentForTckSignatureOnce(): ?ContainerFirstUserContentEntity
-    {
-        return $this->ConversationFirstUserMessage;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerTypeForTckSignatureOnce(): string
-    {
-        return 'conversation';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContainerIdFroTckSignatureOnce(): int
-    {
-        return $this->conversation_id;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getContentDateForTckSignatureOnce(): int
-    {
-        return $this->message_date;
-    }
+    use ContentEntityTrait, SignatureOnceTrait;
 
     /**
      * @since 2.0.0 Alpha 1
      *
      * @return void
+     *
+     * @throws \Exception
      */
     protected function _postSave()
     {
         parent::_postSave();
 
-        $this->adjustContainerFirstUserContentRecordForTckSignatureOnce();
+        $this->getHandlerForTckSignatureOnce('conversation_message')->adjustContainerFirstUserContentRecord($this);
     }
 
     /**
      * @since 2.0.0 Alpha 1
      *
      * @return void
+     *
+     * @throws \Exception
      */
     protected function _postDelete()
     {
         parent::_postDelete();
 
-        $this->adjustContainerFirstUserContentRecordForTckSignatureOnce();
+        $this->getHandlerForTckSignatureOnce('conversation_message')->adjustContainerFirstUserContentRecord($this);
     }
 
     /**
