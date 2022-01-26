@@ -3,6 +3,7 @@
 namespace TickTackk\SignatureOnce\XF\Service\Post;
 
 use TickTackk\SignatureOnce\Repository\Container as ContainerRepo;
+use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;
 
 /**
  * @since 2.0.0 Alpha 1
@@ -12,20 +13,23 @@ class Merger extends XFCP_Merger
     /**
      * @return void
      *
-     * @throws \XF\Db\Exception
+     * @throws \Exception
      */
     protected function updateSourceData()
     {
         parent::updateSourceData();
 
-        /** @var ContainerRepo $containerRepo */
-        $containerRepo = $this->repository('TickTackk\SignatureOnce:Container');
+        /** @var SignatureOnceRepo $signatureOnceRepo */
+        $signatureOnceRepo = $this->repository('TickTackk\SignatureOnce:SignatureOnce');
 
         foreach ($this->sourceThreads AS $sourceThread)
         {
             if (!array_key_exists($sourceThread->first_post_id, $this->sourcePosts) || $sourceThread->reply_count)
             {
-                $containerRepo->rebuildContainerFirstUserContentRecords($sourceThread);
+                $signatureOnceRepo->getHandler('post')->rebuildContainerFirstUserContentRecords(
+                    'thread',
+                    $sourceThread->getEntityId()
+                );
             }
         }
     }
@@ -33,7 +37,7 @@ class Merger extends XFCP_Merger
     /**
      * @return void
      *
-     * @throws \XF\Db\Exception
+     * @throws \Exception
      */
     protected function cleanupActions()
     {
@@ -42,8 +46,11 @@ class Merger extends XFCP_Merger
         $target = $this->getTarget();
         $targetThread = $target->Thread;
 
-        /** @var ContainerRepo $containerRepo */
-        $containerRepo = $this->repository('TickTackk\SignatureOnce:Container');
-        $containerRepo->rebuildContainerFirstUserContentRecords($targetThread);
+        /** @var SignatureOnceRepo $signatureOnceRepo */
+        $signatureOnceRepo = $this->repository('TickTackk\SignatureOnce:SignatureOnce');
+        $signatureOnceRepo->getHandler('post')->rebuildContainerFirstUserContentRecords(
+            'thread',
+            $targetThread->getEntityId()
+        );
     }
 }
