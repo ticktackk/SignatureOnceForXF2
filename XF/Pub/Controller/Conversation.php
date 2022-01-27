@@ -30,6 +30,7 @@ class Conversation extends XFCP_Conversation
 
         $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
+            'conversation_message',
             'conversation',
             'messages'
         );
@@ -50,6 +51,7 @@ class Conversation extends XFCP_Conversation
 
         $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
+            'conversation_message',
             'conversation',
             'messages',
             null
@@ -71,6 +73,7 @@ class Conversation extends XFCP_Conversation
 
         $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
+            'conversation_message',
             'conversation',
             'message',
             null

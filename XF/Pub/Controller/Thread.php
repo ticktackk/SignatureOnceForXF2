@@ -31,39 +31,10 @@ class Thread extends XFCP_Thread
 
         $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
+            'post',
             'thread',
-            'posts',
-            $this->filterPage($params->get('page'))
+            'posts'
         );
-
-        return $reply;
-    }
-
-    /**
-     * @version  2.0.0 Alpha 1
-     *
-     * @param ThreadEntity $thread
-     * @param int $lastDate
-     *
-     * @return ViewReply
-     *
-     * @noinspection PhpMissingParamTypeInspection
-     * @noinspection PhpMissingReturnTypeInspection
-     */
-    protected function getNewPostsReply(ThreadEntity $thread, $lastDate)
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        $reply = parent::getNewPostsReply($thread, $lastDate);
-
-        if (\XF::$versionId < 2020010)
-        {
-            $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
-                $reply,
-                'thread',
-                'posts',
-                null
-            );
-        }
 
         return $reply;
     }
@@ -77,15 +48,13 @@ class Thread extends XFCP_Thread
     {
         $reply = parent::getNewPostsReplyInternal($thread, $posts, $firstUnshownPost);
 
-        if (\XF::$versionId >= 2020010)
-        {
-            $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
-                $reply,
-                'thread',
-                'posts',
-                null
-            );
-        }
+        $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
+            $reply,
+            'post',
+            'thread',
+            'posts',
+            null
+        );
 
         return $reply;
     }

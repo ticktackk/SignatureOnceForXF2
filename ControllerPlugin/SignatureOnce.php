@@ -2,27 +2,38 @@
 
 namespace TickTackk\SignatureOnce\ControllerPlugin;
 
-use TickTackk\SignatureOnce\Entity\ContainerInterface as ContainerEntityInterface;
-use TickTackk\SignatureOnce\Entity\ContainerTrait as ContainerEntityTrait;
+use TickTackk\SignatureOnce\Entity\SignatureOnceTrait;
 use XF\ControllerPlugin\AbstractPlugin;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
+use XF\Mvc\Entity\Repository;
 use XF\Mvc\Reply\View;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Mvc\Reply\AbstractReply;
+use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;
 
 /**
- * Class SignatureOnce
- *
- * @package TickTackk\SignatureOnce\ControllerPlugin
+ * @version 2.0.0 Alpha 1
  */
 class SignatureOnce extends AbstractPlugin
 {
+    /**
+     * @param AbstractReply $reply
+     * @param string $contentType
+     * @param string $containerKey
+     * @param string $messagesKey
+     * @param string $pageKey
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
     public function setContentsFromCurrentPage(
         AbstractReply $reply,
-        $containerKey,
-        $messagesKey,
-        $pageKey = 'page'
+        string $contentType,
+        string $containerKey,
+        string $messagesKey,
+        ?string $pageKey = 'page'
     ) : void
     {
         if (!$reply instanceof ViewReply)
@@ -30,9 +41,11 @@ class SignatureOnce extends AbstractPlugin
             return;
         }
 
-        /** @var ContainerEntityInterface|ContainerEntityTrait|Entity $container */
+        $handler = $this->getSignatureOnceRepo()->getHandler($contentType);
+
+        /** @var SignatureOnceTrait|Entity $container */
         $container = $reply->getParam($containerKey);
-        if (!$container instanceof ContainerEntityInterface || $container->isSignatureShownOncePerContainerForTckSignatureOnce())
+        if (!$container instanceof Entity || !$handler->isSignatureShownOncePerPage($container))
         {
             return;
         }
@@ -46,38 +59,47 @@ class SignatureOnce extends AbstractPlugin
         {
             $messages = [$messages->getEntityId() => $messages];
         }
-        else if (!\is_array($messages))
+        else if (!is_array($messages))
         {
             return;
         }
+        $handler->setContents($messages);
 
-        if (\is_int($pageKey))
+        if (is_int($pageKey))
         {
             $page = $pageKey;
         }
         else if ($pageKey === null)
         {
-            $page = $container->getCurrentPageFromMessagesForTckSignatureOnce($messages);
+            $page = $handler->getCalculatedPageFromContents($container);
         }
         else
         {
-            if (!\array_key_exists($pageKey, $reply->getParams()))
+            if (!array_key_exists($pageKey, $reply->getParams()))
             {
                 return;
             }
 
-            $page = \max(1, $reply->getParam($pageKey));
+            $page = max(1, $reply->getParam($pageKey));
         }
-        $container->setViewingPageForTckSignatureOnce($page);
+        $handler->setPage($page);
 
         // from quick reply so force loading all messages
-        if ($pageKey === null && \count($messages) !== $container->getContentsPerPageForTckSignatureOnce())
+        if ($pageKey === null && !$handler->hasLoadedAllContents($container))
         {
-            $container->loadAllContentsFromCurrentPageForTckSignatureOnce($page);
+            $handler->loadAllContents($container);
         }
         else
         {
-            $container->setContentsFromCurrentPageForTckSignatureOnce($messages);
+            $handler->setContents($messages);
         }
+    }
+
+    /**
+     * @return Repository|SignatureOnceRepo
+     */
+    protected function getSignatureOnceRepo() : SignatureOnceRepo
+    {
+        return $this->repository('TickTackk\SignatureOnce:SignatureOnce');
     }
 }

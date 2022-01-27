@@ -28,6 +28,7 @@ class Post extends XFCP_Post
 
         $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
+            'post',
             'thread',
             'post',
             null
