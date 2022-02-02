@@ -2,9 +2,6 @@
 
 namespace TickTackk\SignatureOnce\Entity;
 
-use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;
-use TickTackk\SignatureOnce\SignatureOnce\AbstractHandler as SignatureOnceHandler;
-use XF\Mvc\Entity\Repository;
 use XF\Mvc\Entity\Structure as EntityStructure;
 use XF\Phrase;
 

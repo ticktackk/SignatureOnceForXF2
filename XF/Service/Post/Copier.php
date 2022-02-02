@@ -13,6 +13,7 @@ class Copier extends XFCP_Copier
      * @return void
      *
      * @throws \XF\Db\Exception
+     * @throws \Exception
      */
     protected function updateTargetData()
     {

@@ -22,7 +22,7 @@ class SignatureOnce extends AbstractPlugin
      * @param string $contentType
      * @param string $containerKey
      * @param string $messagesKey
-     * @param string $pageKey
+     * @param string|null $pageKey
      *
      * @return void
      *

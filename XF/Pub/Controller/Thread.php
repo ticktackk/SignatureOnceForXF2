@@ -24,6 +24,8 @@ class Thread extends XFCP_Thread
      * @param ParameterBag $params
      *
      * @return AbstractReply|ErrorReply|RedirectReply|ViewReply
+     *
+     * @throws \Exception
      */
     public function actionIndex(ParameterBag $params)
     {
@@ -40,9 +42,15 @@ class Thread extends XFCP_Thread
     }
 
     /**
-     * @since XenForo 2.2
      * @version  2.0.0 Alpha 1
-     * @noinspection PhpMissingReturnTypeInspection
+     *
+     * @param ThreadEntity $thread
+     * @param AbstractCollection $posts
+     * @param PostEntity|null $firstUnshownPost
+     *
+     * @return ViewReply
+     *
+     * @throws \Exception
      */
     protected function getNewPostsReplyInternal(ThreadEntity $thread, AbstractCollection $posts, PostEntity $firstUnshownPost = null)
     {

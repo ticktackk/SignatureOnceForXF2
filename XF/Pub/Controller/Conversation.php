@@ -22,6 +22,8 @@ class Conversation extends XFCP_Conversation
      *
      * @return ViewReply
      *
+     * @throws \Exception
+     *
      * @noinspection PhpMissingReturnTypeInspection
      */
     public function actionView(ParameterBag $params)
@@ -44,6 +46,8 @@ class Conversation extends XFCP_Conversation
      * @param ParameterBag $params
      *
      * @return ErrorReply|RedirectReply|ViewReply
+     *
+     * @throws \Exception
      */
     public function actionAddReply(ParameterBag $params)
     {
@@ -66,6 +70,8 @@ class Conversation extends XFCP_Conversation
      * @param ParameterBag $params
      *
      * @return AbstractReply|ErrorReply|RedirectReply|ViewReply
+     *
+     * @throws \Exception
      */
     public function actionMessagesEdit(ParameterBag $params)
     {

@@ -2,7 +2,6 @@
 
 namespace TickTackk\SignatureOnce\XF\Service\Post;
 
-use TickTackk\SignatureOnce\Repository\Container as ContainerRepo;
 use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;
 
 /**

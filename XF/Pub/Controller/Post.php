@@ -21,6 +21,8 @@ class Post extends XFCP_Post
      * @param ParameterBag $params
      *
      * @return AbstractReply|ErrorReply|RedirectReply|ViewReply
+     *
+     * @throws \Exception
      */
     public function actionEdit(ParameterBag $params)
     {
