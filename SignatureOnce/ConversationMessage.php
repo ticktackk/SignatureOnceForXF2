@@ -89,9 +89,8 @@ class ConversationMessage extends AbstractHandler
         Entity $container
     ): ?Entity
     {
-        return $this->getConversationMessageRepo()->findPostsForThreadView($container, ['visibility' => false])
+        return $this->getConversationMessageRepo()->findMessagesForConversationView($container)
             ->where('user_id', $userId)
-            ->orderByDate()
             ->fetchOne();
     }
 
@@ -149,9 +148,12 @@ class ConversationMessage extends AbstractHandler
     {
         $page = $this->getPage();
         $perPage = $this->getContentsPerPage($container);
-        $postFinder = $this->getPostRepo()->findPostsForThreadView($container)->onPage($page, $perPage);
 
-        $this->setContents($postFinder->fetch()->toArray());
+        $messageFinder = $this->getConversationMessageRepo()
+            ->findMessagesForConversationView($container)
+            ->limitByPage($page, $perPage);
+
+        $this->setContents($messageFinder->fetch()->toArray());
     }
 
     /**
