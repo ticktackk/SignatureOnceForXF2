@@ -7,6 +7,7 @@ use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
+use XF\Job\Manager as JobManager;
 
 /**
  * @since 2.0.0 Alpha 1
@@ -37,6 +38,51 @@ class Setup extends AbstractSetup
         }
     }
 
+    /**
+     * @since 2.0.0 Alpha 1
+     *
+     * @param array $stateChanges
+     *
+     * @return void
+     */
+    public function postInstall(array &$stateChanges) : void
+    {
+        $jobList = [
+            'TickTackk\SignatureOnce:ThreadFirstUserPost',
+            'TickTackk\SignatureOnce:ConversationFirstUserMessage'
+        ];
+
+        $this->jobManager()->enqueueUnique('tckSigOnceInstall', 'XF:Atomic', [
+            'execute' => $jobList
+        ]);
+    }
+
+    /**
+     * @since 2.0.0 Alpha 1
+     *
+     * @param int|null $previousVersion
+     * @param array $stateChanges
+     *
+     * @return void
+     */
+    public function postUpgrade($previousVersion, array &$stateChanges) : void
+    {
+        if ($previousVersion)
+        {
+            if ($previousVersion < 2000011)
+            {
+                $jobList = [
+                    'TickTackk\SignatureOnce:ThreadFirstUserPost',
+                    'TickTackk\SignatureOnce:ConversationFirstUserMessage'
+                ];
+
+                $this->jobManager()->enqueueUnique('tckSigOnce2000011', 'XF:Atomic', [
+                    'execute' => $jobList
+                ]);
+            }
+        }
+    }
+
     public function uninstallStep1() : void
     {
         $sm = $this->schemaManager();
@@ -60,5 +106,13 @@ class Setup extends AbstractSetup
     protected function getMySqlInstallData() : MySqlInstallData
     {
         return new MySqlInstallData;
+    }
+
+    /**
+     * @return JobManager
+     */
+    protected function jobManager() : JobManager
+    {
+        return $this->app()->jobManager();
     }
 }
