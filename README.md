@@ -1,4 +1,4 @@
-Signature Once for XenForo 2.1.0+
+Signature Once for XenForo 2.2.0+
 =================================
 
 Description
@@ -9,7 +9,7 @@ This add-on allows user signature to be shown only once per thread or once per p
 Requirements
 ------------
 
-- PHP 7.1.0+
+- PHP 7.4.0+
 
 Options
 -------
@@ -31,6 +31,14 @@ Permissions
 #### Forum permissions
 
 - Bypass signature once
+
+CLI Commands
+------------
+
+| Command | Description |
+|---|---|
+| `xf-rebuild:tck-signature-once-thread-first-user-post-records` | Rebuilds thread first user post records. |
+| `xf-rebuild:tck-signature-once-conversation-first-user-message-records` | Rebuilds conversation first user message records.. |
 
 Funding
 -------
