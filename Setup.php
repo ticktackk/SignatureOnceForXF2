@@ -47,6 +47,26 @@ class Setup extends AbstractSetup
      */
     public function upgrade2000070Step1() : void
     {
+        $this->installStep1();
+    }
+
+    /**
+     * @since 2.0.0
+     *
+     * @return void
+     */
+    public function upgrade2000070Step2() : void
+    {
+        $this->installStep2();
+    }
+
+    /**
+     * @since 2.0.0
+     *
+     * @return void
+     */
+    public function upgrade2000070Step3() : void
+    {
         $optionRenameMap = [
             'showSignatureOncePerThread' => 'tckSignatureOnceShowSignatureOncePerThread',
             'showSignatureOncePerConversation' => 'tckSignatureOnceShowSignatureOncePerConversation'
