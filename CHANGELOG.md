@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.0 (`2000070`)
+
+- **New:** Rewrite the add-on to not make use of subqueries and implement handler system (#30)
+
 ## 1.2.3 (`1020370`)
 
 - **Fix:** Lower requirement for PHP to version 7.1 (#26)
