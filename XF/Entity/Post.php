@@ -9,7 +9,7 @@ use TickTackk\SignatureOnce\XF\Entity\Thread as ExtendedThreadEntity;
 use XF\Mvc\Entity\Structure as EntityStructure;
 
 /**
- * @version 2.0.0 Alpha 1
+ * @version 2.0.0
  *
  * RELATIONS
  * @property ExtendedThreadEntity Thread
@@ -20,7 +20,7 @@ class Post extends XFCP_Post
     use ContentEntityTrait, SignatureOnceTrait;
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @return void
      *
@@ -34,7 +34,7 @@ class Post extends XFCP_Post
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @return void
      *
@@ -48,7 +48,7 @@ class Post extends XFCP_Post
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @param bool $hardDelete
      *
@@ -64,7 +64,7 @@ class Post extends XFCP_Post
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @param EntityStructure $structure
      *

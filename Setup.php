@@ -10,7 +10,7 @@ use XF\AddOn\StepRunnerUpgradeTrait;
 use XF\Job\Manager as JobManager;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class Setup extends AbstractSetup
 {
@@ -39,7 +39,7 @@ class Setup extends AbstractSetup
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @param array $stateChanges
      *
@@ -58,7 +58,7 @@ class Setup extends AbstractSetup
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @param int|null $previousVersion
      * @param array $stateChanges
@@ -69,14 +69,14 @@ class Setup extends AbstractSetup
     {
         if ($previousVersion)
         {
-            if ($previousVersion < 2000011)
+            if ($previousVersion < 2000070)
             {
                 $jobList = [
                     'TickTackk\SignatureOnce:ThreadFirstUserPost',
                     'TickTackk\SignatureOnce:ConversationFirstUserMessage'
                 ];
 
-                $this->jobManager()->enqueueUnique('tckSigOnce2000011', 'XF:Atomic', [
+                $this->jobManager()->enqueueUnique('tckSigOnce2000070', 'XF:Atomic', [
                     'execute' => $jobList
                 ]);
             }

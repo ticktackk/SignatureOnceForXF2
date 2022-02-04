@@ -5,7 +5,7 @@ namespace TickTackk\SignatureOnce\Install\Data;
 use XF\Db\Schema\Create as DbCreateSchema;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class MySql
 {

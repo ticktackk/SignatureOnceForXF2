@@ -5,7 +5,7 @@ namespace TickTackk\SignatureOnce\XF\Job;
 use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class Conversation extends XFCP_Conversation
 {

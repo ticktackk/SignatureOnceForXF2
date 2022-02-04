@@ -6,7 +6,7 @@ use XF\Service\User\DeleteCleanUp as UserDeleteCleanUpSvc;
 use XF\Service\User\ContentChange as UserContentChangeSvc;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class Listener
 {

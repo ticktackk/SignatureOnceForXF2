@@ -14,12 +14,12 @@ use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Entity\Thread as ThreadEntity;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class Thread extends XFCP_Thread
 {
     /**
-     * @version  2.0.0 Alpha 1
+     * @version  2.0.0
      *
      * @param ParameterBag $params
      *
@@ -42,7 +42,7 @@ class Thread extends XFCP_Thread
     }
 
     /**
-     * @version  2.0.0 Alpha 1
+     * @version  2.0.0
      *
      * @param ThreadEntity $thread
      * @param AbstractCollection $posts

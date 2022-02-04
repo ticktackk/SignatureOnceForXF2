@@ -12,7 +12,7 @@ use XF\Phrase;
 use XF\Repository\ConversationMessage as ConversationMessageRepo;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class ConversationMessage extends AbstractHandler
 {

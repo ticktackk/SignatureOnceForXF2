@@ -5,14 +5,14 @@ namespace TickTackk\SignatureOnce\XF\Entity;
 use TickTackk\SignatureOnce\Entity\SignatureOnceTrait;
 
 /**
- * @version 2.0.0 Alpha 1
+ * @version 2.0.0
  */
 class Thread extends XFCP_Thread
 {
     use SignatureOnceTrait;
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @return void
      *

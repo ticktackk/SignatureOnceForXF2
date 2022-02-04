@@ -5,7 +5,7 @@ namespace TickTackk\SignatureOnce\Cli\Command\Rebuild;
 use XF\Cli\Command\Rebuild\AbstractRebuildCommand;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class RebuildConversationFirstUserMessage extends AbstractRebuildCommand
 {

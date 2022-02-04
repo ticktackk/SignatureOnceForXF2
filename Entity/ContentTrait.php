@@ -6,12 +6,12 @@ use XF\Mvc\Entity\Structure as EntityStructure;
 use XF\Phrase;
 
 /**
- * @version 2.0.0 Alpha 1
+ * @version 2.0.0
  */
 trait ContentTrait
 {
     /**
-     * @version 2.0.0 Alpha 1
+     * @version 2.0.0
      *
      * @param Phrase|null $error
      *
@@ -28,7 +28,7 @@ trait ContentTrait
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @param EntityStructure $structure
      * @param string $relationName

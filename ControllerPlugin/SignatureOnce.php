@@ -13,7 +13,7 @@ use XF\Mvc\Reply\AbstractReply;
 use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;
 
 /**
- * @version 2.0.0 Alpha 1
+ * @version 2.0.0
  */
 class SignatureOnce extends AbstractPlugin
 {

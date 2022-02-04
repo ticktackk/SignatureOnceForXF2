@@ -5,7 +5,7 @@ namespace TickTackk\SignatureOnce\XF\Service\User;
 use XF\App as BaseApp;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class ContentChange extends XFCP_ContentChange
 {

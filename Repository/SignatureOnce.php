@@ -6,7 +6,7 @@ use TickTackk\SignatureOnce\SignatureOnce\AbstractHandler as SignatureOnceHandle
 use XF\Mvc\Entity\Repository;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class SignatureOnce extends Repository
 {

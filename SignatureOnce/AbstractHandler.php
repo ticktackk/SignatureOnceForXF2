@@ -10,7 +10,7 @@ use XF\App as BaseApp;
 use XF\Db\AbstractAdapter as DbAdapter;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 abstract class AbstractHandler
 {

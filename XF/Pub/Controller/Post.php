@@ -11,12 +11,12 @@ use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\Error as ErrorReply;
 
 /**
- * @version 2.0.0 Alpha 1
+ * @version 2.0.0
  */
 class Post extends XFCP_Post
 {
     /**
-     * @version 2.0.0 Alpha 1
+     * @version 2.0.0
      *
      * @param ParameterBag $params
      *

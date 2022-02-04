@@ -5,7 +5,7 @@ namespace TickTackk\SignatureOnce\XF\Service\Post;
 use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class Mover extends XFCP_Mover
 {

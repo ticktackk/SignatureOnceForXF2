@@ -3,7 +3,7 @@
 namespace TickTackk\SignatureOnce\Repository\Exception;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class NoForcedContentOrContentTypePassedException extends \InvalidArgumentException
 {

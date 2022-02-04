@@ -11,12 +11,12 @@ use XF\ControllerPlugin\AbstractPlugin as AbstractControllerPlugin;
 use TickTackk\SignatureOnce\ControllerPlugin\SignatureOnce as SignatureOnceControllerPlugin;
 
 /**
- * @version 2.0.0 Alpha 1
+ * @version 2.0.0
  */
 class Conversation extends XFCP_Conversation
 {
     /**
-     * @version 2.0.0 Alpha 1
+     * @version 2.0.0
      *
      * @param ParameterBag $params
      *
@@ -41,7 +41,7 @@ class Conversation extends XFCP_Conversation
     }
 
     /**
-     * @version 2.0.0 Alpha 1
+     * @version 2.0.0
      *
      * @param ParameterBag $params
      *
@@ -65,7 +65,7 @@ class Conversation extends XFCP_Conversation
     }
 
     /**
-     * @version 2.0.0 Alpha 1
+     * @version 2.0.0
      *
      * @param ParameterBag $params
      *

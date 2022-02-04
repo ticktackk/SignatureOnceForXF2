@@ -9,7 +9,7 @@ use TickTackk\SignatureOnce\XF\Entity\ConversationMaster as ConversationMasterEn
 use XF\Mvc\Entity\Structure as EntityStructure;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  *
  * RELATIONS
  * @property ConversationMasterEntity Conversation
@@ -20,7 +20,7 @@ class ConversationMessage extends XFCP_ConversationMessage
     use ContentEntityTrait, SignatureOnceTrait;
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @return void
      *
@@ -34,7 +34,7 @@ class ConversationMessage extends XFCP_ConversationMessage
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @return void
      *
@@ -48,7 +48,7 @@ class ConversationMessage extends XFCP_ConversationMessage
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @param EntityStructure $structure
      *

@@ -7,7 +7,7 @@ use TickTackk\SignatureOnce\SignatureOnce\AbstractHandler as SignatureOnceHandle
 use XF\Mvc\Entity\Repository;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 trait SignatureOnceTrait
 {
@@ -20,7 +20,7 @@ trait SignatureOnceTrait
     }
 
     /**
-     * @since 2.0.0 Alpha 1
+     * @since 2.0.0
      *
      * @param string $contentType
      * @param bool $fromCache

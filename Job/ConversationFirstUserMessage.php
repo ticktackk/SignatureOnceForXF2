@@ -3,7 +3,7 @@
 namespace TickTackk\SignatureOnce\Job;
 
 /**
- * @since 2.0.0 Alpha 1
+ * @since 2.0.0
  */
 class ConversationFirstUserMessage extends AbstractContainerFirstUserContent
 {
