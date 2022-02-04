@@ -1,6 +1,6 @@
 {
     "template": "post_macros",
-    "description": "Add post and thread argument for macro \"signature\" under \"message_macros\" template",
+    "description": "Pass value to content argument for message_macros::signature macro",
     "execution_order": 6182,
     "enabled": true,
     "action": "preg_replace",

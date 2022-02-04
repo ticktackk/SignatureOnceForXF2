@@ -2,31 +2,24 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
-use TickTackk\SignatureOnce\Entity\ContainerInterface;
-use XF\Phrase;
+use TickTackk\SignatureOnce\Entity\SignatureOnceTrait;
 
 /**
- * Class ConversationMaster
- * Extends \XF\Entity\ConversationMaster
- *
- * @package TickTackk\SignatureOnce\XF\Entity
+ * @version 2.0.0
  */
-class ConversationMaster extends XFCP_ConversationMaster implements ContainerInterface
+class ConversationMaster extends XFCP_ConversationMaster
 {
-    /**
-     * @inheritDoc
-     */
-    public function canBypassSignatureOnce(Phrase &$error = null) : bool
-    {
-        $visitor = \XF::visitor();
-        return $visitor->hasPermission('conversation', 'bypassSignatureOnce');
-    }
+    use SignatureOnceTrait;
 
     /**
-     * @inheritDoc
+     * @return void
+     *
+     * @throws \Exception
      */
-    public function getLastModifiedTimestampForSignatureOnce(): int
+    protected function _postDelete()
     {
-        return $this->last_message_date;
+        parent::_postDelete();
+
+        $this->getHandlerForTckSignatureOnce('conversation_message');
     }
 }

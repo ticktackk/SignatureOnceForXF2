@@ -2,31 +2,26 @@
 
 namespace TickTackk\SignatureOnce\XF\Entity;
 
-use TickTackk\SignatureOnce\Entity\ContainerInterface;
-use XF\Phrase;
+use TickTackk\SignatureOnce\Entity\SignatureOnceTrait;
 
 /**
- * Class Thread
- * Extends \XF\Entity\Thread
- *
- * @package TickTackk\SignatureOnce\XF\Entity
+ * @version 2.0.0
  */
-class Thread extends XFCP_Thread implements ContainerInterface
+class Thread extends XFCP_Thread
 {
-    /**
-     * @inheritDoc
-     */
-    public function canBypassSignatureOnce(Phrase &$error = null) : bool
-    {
-        $visitor = \XF::visitor();
-        return $visitor->hasNodePermission($this->node_id, 'bypassSignatureOnce');
-    }
+    use SignatureOnceTrait;
 
     /**
-     * @inheritDoc
+     * @since 2.0.0
+     *
+     * @return void
+     *
+     * @throws \Exception
      */
-    public function getLastModifiedTimestampForSignatureOnce(): int
+    protected function _postDelete()
     {
-        return $this->last_post_date;
+        parent::_postDelete();
+
+        $this->getHandlerForTckSignatureOnce('post')->containerPostDelete($this);
     }
 }

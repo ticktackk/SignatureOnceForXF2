@@ -2,96 +2,68 @@
 
 namespace TickTackk\SignatureOnce\Entity;
 
-use TickTackk\SignatureOnce\Entity\Exception\CouldNotDetermineUserIdFromMessageException;
 use XF\Mvc\Entity\Structure as EntityStructure;
 use XF\Phrase;
 
 /**
- * Trait ContentTrait
- *
- * @package TickTackk\SignatureOnce\Entity
+ * @version 2.0.0
  */
 trait ContentTrait
 {
     /**
-     * @var bool
-     */
-    protected $showSignature = true;
-
-    /**
-     * @return bool
-     */
-    protected function getShowSignature() : bool
-    {
-        return $this->showSignature;
-    }
-
-    /**
-     * @param bool $showSignature
-     */
-    public function setShowSignature(bool $showSignature = true) : void
-    {
-        $this->showSignature = $showSignature;
-    }
-
-    /**
-     * @return string
-     */
-    abstract protected function getContainerRelationNameForTckSignatureOnce() : string;
-
-    /**
-     * @return int
-     */
-    public function getUserIdForTckSignatureOnce() : int
-    {
-        /** @var EntityStructure $structure */
-        $structure = $this->structure();
-        $columns = $structure->columns;
-
-        if (!\array_key_exists('user_id', $columns))
-        {
-            throw new CouldNotDetermineUserIdFromMessageException();
-        }
-
-        return $this->user_id;
-    }
-
-    /**
+     * @version 2.0.0
+     *
      * @param Phrase|null $error
      *
      * @return bool
+     *
+     * @throws \Exception
      */
-    public function canShowSignature(Phrase &$error = null) : bool
+    public function canShowSignature(?Phrase &$error = null) : bool
     {
-        $containerRelationName = $this->getContainerRelationNameForTckSignatureOnce();
-        $container = $this->getRelation($containerRelationName);
-        if (!$container)
-        {
-            return false;
-        }
-
-        if ($this->canBypassSignatureOnce($error))
-        {
-            return true;
-        }
-
-        return $this->getShowSignature();
+        return $this->getHandlerForTckSignatureOnce($this->getEntityContentType())->canShowSignature(
+            $this,
+            $error
+        );
     }
 
     /**
-     * @param Phrase|null $error
+     * @since 2.0.0
      *
-     * @return bool
+     * @param EntityStructure $structure
+     * @param string $relationName
+     * @param string $containerType
+     * @param string $containerIdKey
+     * @param string $userIdKey
+     *
+     * @return void
      */
-    public function canBypassSignatureOnce(Phrase &$error = null) : bool
+    protected static function setupContainerEntityStructureForTckSignatureOnce(
+        EntityStructure $structure,
+        string $relationName,
+        string $containerType,
+        string $containerIdKey,
+        string $userIdKey = 'user_id'
+    ) : void
     {
-        $containerRelationName = $this->getContainerRelationNameForTckSignatureOnce();
-        $container = $this->getRelation($containerRelationName);
-        if (!$container)
-        {
-            return false;
-        }
+        $structure->relations[$relationName] = [
+            'entity' => 'TickTackk\SignatureOnce:ContainerFirstUserContent',
+            'type' => static::TO_ONE,
+            'conditions' => [
+                ['user_id', '=', '$' . $userIdKey],
+                ['container_type', '=', $containerType],
+                ['container_id', '=', '$' . $containerIdKey],
+                ['content_type', '=', $structure->contentType]
+            ]
+        ];
 
-        return $container->canBypassSignatureOnce($error);
+        if (array_key_exists('full', $structure->withAliases))
+        {
+            $structure->withAliases['full'][] = $relationName;
+        }
+        else
+        {
+            $structure->defaultWith[] = $relationName;
+        }
     }
 }
