@@ -5,6 +5,8 @@ CHANGELOG
 
 - **New:** Rewrite the add-on to not make use of sub-queries and implement handler system (#30)
 - **Change:** Rename options to have tck prefix (#29)
+- **Change:** Increase PHP minimum requirement to PHP 7.4 (#30)
+- **Change:** Increase XenForo minimum version requirement to 2.2 (#30)
 
 ## 1.2.3 (`1020370`)
 
