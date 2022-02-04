@@ -42,7 +42,7 @@ class Post extends AbstractHandler
      */
     public function isSignatureShownOncePerPage(Entity $container): bool
     {
-        return !$this->options()->showSignatureOncePerThread;
+        return !$this->options()->tckSignatureOnceShowSignatureOncePerThread;
     }
 
     /**

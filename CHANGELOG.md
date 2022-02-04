@@ -3,7 +3,8 @@ CHANGELOG
 
 ## 2.0.0 (`2000070`)
 
-- **New:** Rewrite the add-on to not make use of subqueries and implement handler system (#30)
+- **New:** Rewrite the add-on to not make use of sub-queries and implement handler system (#30)
+- **Change:** Rename options to have tck prefix (#29)
 
 ## 1.2.3 (`1020370`)
 

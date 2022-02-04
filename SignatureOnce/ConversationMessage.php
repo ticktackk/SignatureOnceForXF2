@@ -36,7 +36,7 @@ class ConversationMessage extends AbstractHandler
      */
     public function isSignatureShownOncePerPage(Entity $container): bool
     {
-        return !$this->options()->showSignatureOncePerConversation;
+        return !$this->options()->tckSignatureOnceShowSignatureOncePerConversation;
     }
 
     /**

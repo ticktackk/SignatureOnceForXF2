@@ -7,7 +7,9 @@ use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
+use XF\Entity\Option as OptionEntity;
 use XF\Job\Manager as JobManager;
+use XF\Mvc\Entity\Manager as EntityManager;
 
 /**
  * @since 2.0.0
@@ -35,6 +37,46 @@ class Setup extends AbstractSetup
         foreach ($this->getMySqlInstallData()->getInstallAlters() AS $tableName => $toApply)
         {
             $sm->alterTable($tableName, $toApply);
+        }
+    }
+
+    /**
+     * @since 2.0.0
+     *
+     * @return void
+     */
+    public function upgrade2000070Step1() : void
+    {
+        $optionRenameMap = [
+            'showSignatureOncePerThread' => 'tckSignatureOnceShowSignatureOncePerThread',
+            'showSignatureOncePerConversation' => 'tckSignatureOnceShowSignatureOncePerConversation'
+        ];
+
+        foreach ($optionRenameMap AS $oldOptionId => $newOptionId)
+        {
+            /** @var OptionEntity $oldOption */
+            $oldOption = $this->em()->find('XF:Option', $oldOptionId);
+            /** @var OptionEntity $newOption */
+            $newOption = $this->em()->find('XF:Option', $newOptionId);
+
+            if ($oldOption && !$newOption)
+            {
+                $oldOption->option_id = $newOptionId;
+                if ($oldOption->hasBehavior('XF:DevOutputWritable'))
+                {
+                    $oldOption->getBehavior('XF:DevOutputWritable')->setOption('write_dev_output', false);
+                }
+                $oldOption->saveIfChanged();
+            }
+            else if ($oldOption && $newOption)
+            {
+                $newOption->option_value = $oldOption->option_value;
+                if ($oldOption->hasBehavior('XF:DevOutputWritable'))
+                {
+                    $oldOption->getBehavior('XF:DevOutputWritable')->setOption('write_dev_output', false);
+                }
+                $newOption->saveIfChanged();
+            }
         }
     }
 
@@ -109,6 +151,18 @@ class Setup extends AbstractSetup
     }
 
     /**
+     * @since 2.0.0
+     *
+     * @return EntityManager
+     */
+    protected function em() : EntityManager
+    {
+        return $this->app()->em();
+    }
+
+    /**
+     * @since 2.0.0
+     *
      * @return JobManager
      */
     protected function jobManager() : JobManager
