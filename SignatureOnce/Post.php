@@ -140,7 +140,7 @@ class Post extends AbstractHandler
 			    WHERE thread_id = ?
 				  AND message_state = 'visible'
 				  AND user_id > 0
-			    GROUP BY user_id ASC
+			    GROUP BY user_id
 		", [$containerType, $this->getContentType(), $containerId]);
     }
 
