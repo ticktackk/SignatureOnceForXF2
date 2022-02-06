@@ -13,6 +13,7 @@ use XF\Repository\ConversationMessage as ConversationMessageRepo;
 
 /**
  * @since 2.0.0
+ * @version 2.0.1
  */
 class ConversationMessage extends AbstractHandler
 {
@@ -117,6 +118,8 @@ class ConversationMessage extends AbstractHandler
     }
 
     /**
+     * @version 2.0.1
+     *
      * @inheritDoc
      */
     protected function internalRebuildContainerFirstUserContentRecords(

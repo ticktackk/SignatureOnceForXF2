@@ -13,6 +13,7 @@ use TickTackk\SignatureOnce\XF\Entity\Thread as ExtendedThreadEntity;
 
 /**
  * @since 2.0.0
+ * @version 2.0.1
  */
 class Post extends AbstractHandler
 {
@@ -124,6 +125,8 @@ class Post extends AbstractHandler
     }
 
     /**
+     * @version 2.0.1
+     *
      * @inheritDoc
      */
     protected function internalRebuildContainerFirstUserContentRecords(
