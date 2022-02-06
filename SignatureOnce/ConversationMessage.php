@@ -13,6 +13,7 @@ use XF\Repository\ConversationMessage as ConversationMessageRepo;
 
 /**
  * @since 2.0.0
+ * @version 2.0.1
  */
 class ConversationMessage extends AbstractHandler
 {
@@ -117,6 +118,8 @@ class ConversationMessage extends AbstractHandler
     }
 
     /**
+     * @version 2.0.1
+     *
      * @inheritDoc
      */
     protected function internalRebuildContainerFirstUserContentRecords(
@@ -128,12 +131,11 @@ class ConversationMessage extends AbstractHandler
         $db->query("
 			INSERT INTO xf_tck_signature_once_container_first_user_content
 			    (user_id, container_type, container_id, content_type, content_id, content_date)
-			    SELECT user_id, ?, thread_id, ?, post_id, post_date
-			    FROM xf_post
-			    WHERE thread_id = ?
-				  AND message_state = 'visible'
+			    SELECT user_id, ?, conversation_id, ?, message_id, message_date
+			    FROM xf_conversation_message
+			    WHERE conversation_id = ?
 				  AND user_id > 0
-			    GROUP BY user_id ASC
+			    GROUP BY user_id
 		", [$containerType, $this->getContentType(), $containerId]);
     }
 

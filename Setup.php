@@ -121,6 +121,7 @@ class Setup extends AbstractSetup
 
     /**
      * @since 2.0.0
+     * @version 2.0.1
      *
      * @param int|null $previousVersion
      * @param array $stateChanges
@@ -131,7 +132,13 @@ class Setup extends AbstractSetup
     {
         if ($previousVersion)
         {
-            if ($previousVersion < 2000070)
+            if ($previousVersion < 2000170)
+            {
+                $this->jobManager()->cancelUniqueJob('tckSigOnceInstall');
+                $this->jobManager()->cancelUniqueJob('tckSigOnce2000070');
+            }
+
+            if ($previousVersion < 2000170)
             {
                 $jobList = [
                     'TickTackk\SignatureOnce:ThreadFirstUserPost',

@@ -1,6 +1,11 @@
 CHANGELOG
 ==========================
 
+## 2.0.1 (`2000170`)
+
+- **Fix:** Rebuilding conversation or thread first content record causes MySQL exception to be logged due to invalid query (#34)
+- **Fix:** Rebuilding conversation first content record fails miserably due to reference to wrong table (#35)
+
 ## 2.0.0 (`2000070`)
 
 - **New:** Rewrite the add-on to not make use of sub-queries and implement handler system (#30)
