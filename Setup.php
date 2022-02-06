@@ -145,7 +145,7 @@ class Setup extends AbstractSetup
                     'TickTackk\SignatureOnce:ConversationFirstUserMessage'
                 ];
 
-                $this->jobManager()->enqueueUnique('tckSigOnce2000070', 'XF:Atomic', [
+                $this->jobManager()->enqueueUnique('tckSigOnce2000170', 'XF:Atomic', [
                     'execute' => $jobList
                 ]);
             }
