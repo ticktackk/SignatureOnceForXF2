@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.2 (`2000270`)
+
+- **Fix:** Calculating current page fails when showing conversation once per page (#38)
+
 ## 2.0.1 (`2000170`)
 
 - **Fix:** Rebuilding conversation or thread first content record causes MySQL exception to be logged due to invalid query (#34)
