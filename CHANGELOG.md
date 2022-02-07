@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.2 (`2000270`)
 
 - **Fix:** Calculating current page fails when showing conversation once per page (#38)
+- **Fix:** Deleting user does not register queries properly (#39)
 
 ## 2.0.1 (`2000170`)
 
