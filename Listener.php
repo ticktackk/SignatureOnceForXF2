@@ -7,6 +7,7 @@ use XF\Service\User\ContentChange as UserContentChangeSvc;
 
 /**
  * @since 2.0.0
+ * @version 2.0.2
  */
 class Listener
 {
@@ -27,6 +28,8 @@ class Listener
     }
 
     /**
+     * @version 2.0.2
+     *
      * Register the updates that need to happen when a user is renamed, deleted, etc.
      *
      * @param UserContentChangeSvc $changeService The service being initialized.
