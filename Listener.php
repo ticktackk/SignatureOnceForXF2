@@ -7,6 +7,7 @@ use XF\Service\User\ContentChange as UserContentChangeSvc;
 
 /**
  * @since 2.0.0
+ * @version 2.0.2
  */
 class Listener
 {
@@ -27,6 +28,8 @@ class Listener
     }
 
     /**
+     * @version 2.0.2
+     *
      * Register the updates that need to happen when a user is renamed, deleted, etc.
      *
      * @param UserContentChangeSvc $changeService The service being initialized.
@@ -41,6 +44,7 @@ class Listener
         array &$updates
     ) : void
     {
-        $updates['xf_tck_signature_once_container_first_user_content'] = 'user_id = ?';
+        // this is combined with queries in \TickTackk\SignatureOnce\XF\Service\User\ContentChange::stepMergeContainerFirstUserContentForTckSignatureOnce() to do a "merge"
+        $updates['xf_tck_signature_once_container_first_user_content'] = ['user_id'];
     }
 }

@@ -13,7 +13,7 @@ use XF\Repository\ConversationMessage as ConversationMessageRepo;
 
 /**
  * @since 2.0.0
- * @version 2.0.1
+ * @version 2.0.2
  */
 class ConversationMessage extends AbstractHandler
 {
@@ -106,15 +106,23 @@ class ConversationMessage extends AbstractHandler
     }
 
     /**
+     * @version 2.0.2
+     *
      * @inheritDoc
      *
      * @param ExtendedConversationMasterEntity $container
      */
     public function getCalculatedPageFromContents(Entity $container): int
     {
-        $lastPosition = max(array_column($this->getContents(), 'position')) + 1;
+        $lastDate = max(array_column($this->getContents(), 'message_date'));
 
-        return (int) max(1, ceil($lastPosition / $this->getContentsPerPage($container)));
+        /** @var ConversationMessageRepo $conversationMessageRepo */
+        $conversationMessageRepo = $this->repository('XF:ConversationMessage');
+        $conversationMessageTotal = $conversationMessageRepo->findMessagesForConversationView($container)
+            ->where('message_date', '<', $lastDate)
+            ->total();
+
+        return floor($conversationMessageTotal / $this->getContentsPerPage($container)) + 1;
     }
 
     /**
