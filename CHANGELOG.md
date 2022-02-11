@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.3 (`2000370`)
+
+- **Fix:** Showing posts via "Show" link results in template errors being logged (#42)
+
 ## 2.0.2 (`2000270`)
 
 - **Fix:** Calculating current page fails when showing conversation once per page (#38)
