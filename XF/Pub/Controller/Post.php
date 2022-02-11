@@ -64,6 +64,30 @@ class Post extends XFCP_Post
     }
 
     /**
+     * @since 2.0.3
+     *
+     * @param ParameterBag $params
+     *
+     * @return AbstractReply|RedirectReply|ViewReply
+     *
+     * @throws \Exception
+     */
+    public function actionMarkSolution(ParameterBag $params)
+    {
+        $reply = parent::actionMarkSolution($params);
+
+        $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
+            $reply,
+            'post',
+            'thread',
+            'post',
+            null
+        );
+
+        return $reply;
+    }
+
+    /**
      * @return AbstractControllerPlugin|SignatureOnceControllerPlugin
      */
     protected function getSignatureOnceControllerPlugin() : SignatureOnceControllerPlugin

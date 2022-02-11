@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.3 (`2000370`)
 
 - **Fix:** Showing posts via "Show" link results in template errors being logged (#42)
+- **Fix:** Marking post as solution results template error being logged (#41)
 
 ## 2.0.2 (`2000270`)
 
