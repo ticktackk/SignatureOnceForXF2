@@ -11,10 +11,34 @@ use XF\Mvc\Reply\Redirect as RedirectReply;
 use XF\Mvc\Reply\Error as ErrorReply;
 
 /**
- * @version 2.0.0
+ * @version 2.0.3
  */
 class Post extends XFCP_Post
 {
+    /**
+     * @since 2.0.3
+     *
+     * @param ParameterBag $params
+     *
+     * @return AbstractReply|ViewReply
+     *
+     * @throws \Exception
+     */
+    public function actionShow(ParameterBag $params)
+    {
+        $reply = parent::actionShow($params);
+
+        $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
+            $reply,
+            'post',
+            'thread',
+            'post',
+            null
+        );
+
+        return $reply;
+    }
+
     /**
      * @version 2.0.0
      *
@@ -27,6 +51,30 @@ class Post extends XFCP_Post
     public function actionEdit(ParameterBag $params)
     {
         $reply = parent::actionEdit($params);
+
+        $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
+            $reply,
+            'post',
+            'thread',
+            'post',
+            null
+        );
+
+        return $reply;
+    }
+
+    /**
+     * @since 2.0.3
+     *
+     * @param ParameterBag $params
+     *
+     * @return AbstractReply|RedirectReply|ViewReply
+     *
+     * @throws \Exception
+     */
+    public function actionMarkSolution(ParameterBag $params)
+    {
+        $reply = parent::actionMarkSolution($params);
 
         $this->getSignatureOnceControllerPlugin()->setContentsFromCurrentPage(
             $reply,
