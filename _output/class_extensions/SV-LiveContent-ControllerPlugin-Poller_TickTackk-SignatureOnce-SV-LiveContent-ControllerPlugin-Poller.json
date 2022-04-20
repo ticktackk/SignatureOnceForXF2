@@ -1,0 +1,6 @@
+{
+    "from_class": "SV\\LiveContent\\ControllerPlugin\\Poller",
+    "to_class": "TickTackk\\SignatureOnce\\SV\\LiveContent\\ControllerPlugin\\Poller",
+    "execute_order": 6182,
+    "active": true
+}

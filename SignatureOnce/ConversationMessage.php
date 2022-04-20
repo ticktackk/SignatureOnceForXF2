@@ -114,7 +114,13 @@ class ConversationMessage extends AbstractHandler
      */
     public function getCalculatedPageFromContents(Entity $container): int
     {
-        $lastDate = max(array_column($this->getContents(), 'message_date'));
+        $contents = $this->getContents();
+        if (!count($contents)) // shouldn't happen but it does when using live content
+        {
+            return 1;
+        }
+
+        $lastDate = max(array_column($contents, 'message_date'));
 
         /** @var ConversationMessageRepo $conversationMessageRepo */
         $conversationMessageRepo = $this->repository('XF:ConversationMessage');

@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.4 (`2000470`)
+
+- **Fix:** Incompatibility with Live Content add-on (#44)
+
 ## 2.0.3 (`2000370`)
 
 - **Fix:** Showing posts via "Show" link results in template errors being logged (#42)
