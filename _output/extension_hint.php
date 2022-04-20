@@ -3,6 +3,11 @@
 // ################## THIS IS A GENERATED FILE ##################
 // DO NOT EDIT DIRECTLY. EDIT THE CLASS EXTENSIONS IN THE CONTROL PANEL.
 
+namespace TickTackk\SignatureOnce\SV\LiveContent\ControllerPlugin
+{
+	class XFCP_Poller extends \SV\LiveContent\ControllerPlugin\Poller {}
+}
+
 namespace TickTackk\SignatureOnce\XF\Entity
 {
 	class XFCP_ConversationMaster extends \XF\Entity\ConversationMaster {}

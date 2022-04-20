@@ -119,7 +119,13 @@ class Post extends AbstractHandler
      */
     public function getCalculatedPageFromContents(Entity $container): int
     {
-        $lastPosition = max(array_column($this->getContents(), 'position')) + 1;
+        $contents = $this->getContents();
+        if (!count($contents)) // shouldn't happen but it does when using live content
+        {
+            return 1;
+        }
+
+        $lastPosition = max(array_column($contents, 'position')) + 1;
 
         return (int) max(1, ceil($lastPosition / $this->getContentsPerPage($container)));
     }
