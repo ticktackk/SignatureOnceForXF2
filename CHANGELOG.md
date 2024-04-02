@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.5 (`2000570`)
+
+- **Fix:** Incompatibility with XenForo 2.3 (#46)
+
 ## 2.0.4 (`2000470`)
 
 - **Fix:** Incompatibility with Live Content add-on (#44)

@@ -1,0 +1,9 @@
+{
+    "template": "message_macros",
+    "description": "Check if the signature is shown-able",
+    "execution_order": 6182,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "{(^\\s<xf:if is=\"\\$xf\\.visitor\\.Option\\.content_show_signature.*?)(\">$)}sim",
+    "replace": "$1 AND ($content ? $content.canShowSignature() : true)$2"
+}
