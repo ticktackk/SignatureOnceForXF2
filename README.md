@@ -24,11 +24,11 @@ Options
 Permissions
 -----------
 
-#### Conversation permissions
+#### Forum permissions
 
 - Bypass signature once
 
-#### Forum permissions
+#### Conversation permissions
 
 - Bypass signature once
 
@@ -37,8 +37,8 @@ CLI Commands
 
 | Command | Description |
 |---|---|
-| `xf-rebuild:tck-signature-once-thread-first-user-post-records` | Rebuilds thread first user post records. |
 | `xf-rebuild:tck-signature-once-conversation-first-user-message-records` | Rebuilds conversation first user message records.. |
+| `xf-rebuild:tck-signature-once-thread-first-user-post-records` | Rebuilds thread first user post records. |
 
 Funding
 -------
