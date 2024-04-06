@@ -5,6 +5,7 @@ CHANGELOG
 
 - **Fix:** Incompatibility with XenForo 2.3 (#46)
 - **Fix:** ErrorException: `[E_DEPRECATED]` Implicit conversion from float `1799.9865641593933` to int loses precision `src/addons/TickTackk/SignatureOnce/XF/Service/User/ContentChange.php:37` (#48)
+- **Fix:** Execution order of code event listener does not match that of resource ID (#49)
 
 ## 2.0.4 (`2000470`)
 
