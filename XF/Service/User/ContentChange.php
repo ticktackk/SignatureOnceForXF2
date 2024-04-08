@@ -26,7 +26,7 @@ class ContentChange extends XFCP_ContentChange
 
     /**
      * @param mixed $stepLastOffset
-     * @param int $remainingTime
+     * @param int|float $remainingTime
      *
      * @return void
      *
@@ -36,7 +36,7 @@ class ContentChange extends XFCP_ContentChange
      */
     protected function stepMergeContainerFirstUserContentForTckSignatureOnce(
         $stepLastOffset,
-        int $remainingTime
+        $remainingTime
     ) : void
     {
         $originalUserId = $this->getOriginalUserId();

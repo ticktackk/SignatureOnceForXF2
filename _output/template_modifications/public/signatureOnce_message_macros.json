@@ -1,9 +1,0 @@
-{
-    "template": "message_macros",
-    "description": "Check if the signature is shown-able",
-    "execution_order": 6182,
-    "enabled": true,
-    "action": "preg_replace",
-    "find": "#(<xf:macro name=\"signature\" arg-.*?)(>)(.*?\\.Profile.signature.*?)(\">.*?<\\/xf:macro>)#si",
-    "replace": "$1 arg-content=\"{{ false }}\"$2$3 AND ($content ? $content.canShowSignature() : true)$4"
-}

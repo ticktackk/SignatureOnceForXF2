@@ -4,6 +4,6 @@
     "execution_order": 6182,
     "enabled": true,
     "action": "preg_replace",
-    "find": "#(<xf:macro template=\"message_macros\" name=\"signature\".*?)(\\/>)#si",
-    "replace": "$1arg-content=\"{$post}\"$2"
+    "find": "{(<xf:macro (?:id=\"message_macros::signature\"|template=\"message_macros\" name=\"signature\").*?)(.*?>)}s",
+    "replace": "$1 arg-content=\"{$post}\"$2"
 }

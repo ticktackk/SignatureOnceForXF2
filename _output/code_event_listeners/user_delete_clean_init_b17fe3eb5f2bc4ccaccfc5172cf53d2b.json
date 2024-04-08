@@ -1,6 +1,6 @@
 {
     "event_id": "user_delete_clean_init",
-    "execute_order": 10,
+    "execute_order": 6182,
     "callback_class": "TickTackk\\SignatureOnce\\Listener",
     "callback_method": "userDeleteCleanInit",
     "active": true,

@@ -1,0 +1,9 @@
+{
+    "template": "message_macros",
+    "description": "Add argument to signature macro",
+    "execution_order": 6182,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "{(^<xf:macro (?:id|name)=\"signature\".*?)(>$)}sm",
+    "replace": "$1 arg-content=\"{{ false }}\"$2"
+}
