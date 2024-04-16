@@ -15,6 +15,7 @@ namespace TickTackk\SignatureOnce\XF\Entity
 	class XFCP_ConversationMessage extends \XF\Entity\ConversationMessage {}
 	class XFCP_Post extends \XF\Entity\Post {}
 	class XFCP_Thread extends \XF\Entity\Thread {}
+	class XFCP_UserOption extends \XF\Entity\UserOption {}
 }
 
 namespace TickTackk\SignatureOnce\XF\Job

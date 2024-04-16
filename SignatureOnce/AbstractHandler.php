@@ -11,6 +11,7 @@ use XF\Db\AbstractAdapter as DbAdapter;
 
 /**
  * @since 2.0.0
+ * @version 2.0.6
  */
 abstract class AbstractHandler
 {
@@ -77,6 +78,16 @@ abstract class AbstractHandler
     public function getContents():? array
     {
         return $this->contents;
+    }
+
+    /**
+     * @since 2.0.6
+     *
+     * @return bool
+     */
+    public function hasContents() : bool
+    {
+        return !empty($this->contents);
     }
 
     /**
@@ -237,6 +248,11 @@ abstract class AbstractHandler
         return true;
     }
 
+    /**
+     * @version 2.0.6
+     *
+     * @return void
+     */
     protected function cacheUserFirstContentIdMap() : void
     {
         $userFirstContentIdMap = $this->userFirstContentIdMap;
@@ -246,15 +262,18 @@ abstract class AbstractHandler
         }
 
         $userFirstContentIdMap = [];
-        foreach ($this->getContents() AS $content)
+        if ($this->hasContents())
         {
-            $userId = $this->getUserIdFromContent($content);
-            if (!$userId || array_key_exists($userId, $userFirstContentIdMap))
+            foreach ($this->getContents() AS $content)
             {
-                continue;
-            }
+                $userId = $this->getUserIdFromContent($content);
+                if (!$userId || array_key_exists($userId, $userFirstContentIdMap))
+                {
+                    continue;
+                }
 
-            $userFirstContentIdMap[$userId] = $content->getEntityId();
+                $userFirstContentIdMap[$userId] = $content->getEntityId();
+            }
         }
         $this->userFirstContentIdMap = $userFirstContentIdMap;
     }
@@ -286,6 +305,8 @@ abstract class AbstractHandler
     }
 
     /**
+     * @version 2.0.6
+     *
      * @param Entity $container
      *
      * @return int
@@ -294,13 +315,12 @@ abstract class AbstractHandler
         Entity $container
     ) : int
     {
-        $contents = $this->getContents();
-        if ($contents === null)
+        if (!$this->hasContents())
         {
             return false;
         }
 
-        return count($contents) === $this->getContentsPerPage($container);
+        return count($this->getContents()) === $this->getContentsPerPage($container);
     }
 
     /**

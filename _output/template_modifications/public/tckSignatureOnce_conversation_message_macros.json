@@ -1,9 +1,0 @@
-{
-    "template": "conversation_message_macros",
-    "description": "Pass value to content argument for message_macros::signature macro",
-    "execution_order": 6182,
-    "enabled": true,
-    "action": "preg_replace",
-    "find": "{(<xf:macro (?:id=\"message_macros::signature\"|template=\"message_macros\" name=\"signature\").*?)(.*?>)}s",
-    "replace": "$1 arg-content=\"{$message}\"$2"
-}
