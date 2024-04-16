@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.6 (`2000670`)
 
 - **Change:** Use templater_macro_pre_render over template modification to force hide user signature (#50)
+- **Fix:** Template error: [E_WARNING] foreach() argument must be of type array|object, null given (#51)
 
 ## 2.0.5 (`2000570`)
 
