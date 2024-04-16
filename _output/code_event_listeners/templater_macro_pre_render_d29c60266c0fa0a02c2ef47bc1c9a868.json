@@ -1,0 +1,9 @@
+{
+    "event_id": "templater_macro_pre_render",
+    "execute_order": 6182,
+    "callback_class": "TickTackk\\SignatureOnce\\Listener",
+    "callback_method": "templaterMacroPreRender",
+    "active": true,
+    "hint": "public:conversation_message_macros:message",
+    "description": "Allows disabling user signature per conversation message instead of directly touching template modifications"
+}
