@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.7 (`2000770`)
+
+- **Fix:** Since 2.0.6, conversation message signatures are always shown (#53)
+
 ## 2.0.6 (`2000670`)
 
 - **Change:** Use templater_macro_pre_render over template modification to force hide user signature (#50)

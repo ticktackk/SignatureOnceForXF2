@@ -3,6 +3,7 @@
 namespace TickTackk\SignatureOnce;
 
 use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
+use TickTackk\SignatureOnce\XF\Entity\ConversationMessage as ExtendedConversationMessageEntity;
 use TickTackk\SignatureOnce\XF\Entity\Post as ExtendedPostEntity;
 use XF\Entity\User as UserEntity;
 use TickTackk\SignatureOnce\XF\Entity\UserOption as ExtendedUserOptionEntity;
@@ -11,7 +12,7 @@ use XF\Service\User\ContentChange as UserContentChangeSvc;
 
 /**
  * @since 2.0.0
- * @version 2.0.6
+ * @version 2.0.7
  */
 class Listener
 {
@@ -54,6 +55,7 @@ class Listener
 
     /**
      * @since 2.0.6
+     * @version 2.0.7
      *
      * Allows the modification of various properties for template macros before they are rendered.
      *
@@ -95,7 +97,7 @@ class Listener
 
             case 'public:conversation_message_macros:message':
                 $content = $arguments['message'] ?? null;
-                if ($content instanceof ExtendedPostEntity)
+                if ($content instanceof ExtendedConversationMessageEntity)
                 {
                     $user = $content->User;
                 }
