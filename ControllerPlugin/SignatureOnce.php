@@ -7,7 +7,6 @@ use XF\ControllerPlugin\AbstractPlugin;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Repository;
-use XF\Mvc\Reply\View;
 use XF\Mvc\Reply\View as ViewReply;
 use XF\Mvc\Reply\AbstractReply;
 use TickTackk\SignatureOnce\Repository\SignatureOnce as SignatureOnceRepo;

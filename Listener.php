@@ -6,7 +6,6 @@ use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
 use TickTackk\SignatureOnce\XF\Entity\ConversationMessage as ExtendedConversationMessageEntity;
 use TickTackk\SignatureOnce\XF\Entity\Post as ExtendedPostEntity;
 use XF\Entity\User as UserEntity;
-use TickTackk\SignatureOnce\XF\Entity\UserOption as ExtendedUserOptionEntity;
 use XF\Service\User\DeleteCleanUp as UserDeleteCleanUpSvc;
 use XF\Service\User\ContentChange as UserContentChangeSvc;
 
