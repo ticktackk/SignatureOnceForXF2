@@ -4,6 +4,7 @@ CHANGELOG
 ## 2.0.7 (`2000770`)
 
 - **Fix:** Since 2.0.6, conversation message signatures are always shown (#53)
+- **Change:** Use `templater_macro_post_render` to reset signature visibility status (#55)
 
 ## 2.0.6 (`2000670`)
 

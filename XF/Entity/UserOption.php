@@ -6,6 +6,7 @@ use XF\Mvc\Entity\Structure as EntityStructure;
 
 /**
  * @since 2.0.6
+ * @version 2.0.7
  *
  * COLUMNS
  * @property bool $content_show_signature_
@@ -15,16 +16,14 @@ use XF\Mvc\Entity\Structure as EntityStructure;
  */
 class UserOption extends XFCP_UserOption
 {
+    /**
+     * @version 2.0.7
+     *
+     * @return bool
+     */
     public function getContentShowSignature() : bool
     {
-        try
-        {
-            return $this->getOption('tck_show_signature') ?? $this->content_show_signature_;
-        }
-        finally
-        {
-            $this->setOption('tck_show_signature', null);
-        }
+        return $this->getOption('tck_show_signature') ?? $this->content_show_signature_;
     }
 
     public static function getStructure(EntityStructure $structure)
