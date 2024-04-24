@@ -4,16 +4,9 @@ namespace TickTackk\SignatureOnce\SV\LiveContent\ControllerPlugin;
 
 use SV\LiveContent\ILiveContent;
 use TickTackk\SignatureOnce\ControllerPlugin\SignatureOnce as SignatureOnceControllerPlugin;
-use XF\App as BaseApp;
 use XF\ControllerPlugin\AbstractPlugin as AbstractControllerPlugin;
-use XF\Mvc\Entity\Finder;
-use XF\Mvc\Entity\Entity;
-use XF\Mvc\Entity\Repository;
 use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\View as ViewReply;
-use XF\Service\AbstractService;
-use XF\Mvc\Entity\Manager as EntityManager;
-use XF\Job\Manager as JobManager;
 
 /**
  * @since 2.0.4

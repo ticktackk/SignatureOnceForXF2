@@ -1,0 +1,9 @@
+{
+    "event_id": "templater_macro_post_render",
+    "execute_order": 6182,
+    "callback_class": "TickTackk\\SignatureOnce\\Listener",
+    "callback_method": "templaterMacroPostRender",
+    "active": true,
+    "hint": "public:conversation_message_macros:message",
+    "description": "Reset the show signature flag from XF:UserOption entity after rendering conversation_message_macros:message"
+}
