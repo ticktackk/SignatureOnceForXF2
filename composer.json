@@ -1,0 +1,33 @@
+{
+    "name": "ticktackk/signature-once-for-xf2",
+    "description": "This add-on allows user signature to be shown only once per thread or once per page.",
+    "version": "1000011",
+    "type": "xenforo-addon",
+    "keywords": [
+        "signature",
+        "once",
+        "xenforo"
+    ],
+    "readme": "README.md",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "TickTackk",
+            "email": "me@ticktackk.io",
+            "homepage": "https://www.ticktackk.io/",
+            "role": "Developer"
+        }
+    ],
+    "config": {
+        "vendor-dir": "_vendor",
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-ctype": "*",
+        "ext-json": "*"
+    }
+}

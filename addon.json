@@ -19,5 +19,6 @@
             "PHP 7.4.0+"
         ]
     },
-    "icon": "fa-paint-brush"
+    "icon": "fa-paint-brush",
+    "composer_autoload": "_vendor/composer"
 }
