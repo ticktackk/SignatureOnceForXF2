@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Entity\\UserProfile",
+    "to_class": "TickTackk\\SignatureOnce\\XF\\Entity\\UserProfile",
+    "execute_order": 6182,
+    "active": true
+}

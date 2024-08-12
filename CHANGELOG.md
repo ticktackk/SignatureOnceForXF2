@@ -1,6 +1,10 @@
 CHANGELOG
 ==========================
 
+## 2.0.8 (`2000870`)
+
+- **Fix:** Hide signature flag is set in `\XF\Entity\UserOption` instead of `\XF\Entity\UserProfile` (#56)
+
 ## 2.0.7 (`2000770`)
 
 - **Fix:** Since 2.0.6, conversation message signatures are always shown (#53)
