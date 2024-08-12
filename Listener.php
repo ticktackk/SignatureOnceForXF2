@@ -5,7 +5,7 @@ namespace TickTackk\SignatureOnce;
 use TickTackk\SignatureOnce\Entity\ContentTrait as EntityContentTrait;
 use TickTackk\SignatureOnce\XF\Entity\ConversationMessage as ExtendedConversationMessageEntity;
 use TickTackk\SignatureOnce\XF\Entity\Post as ExtendedPostEntity;
-use TickTackk\SignatureOnce\XF\Entity\UserOption as ExtendedUserOptionEntity;
+use TickTackk\SignatureOnce\XF\Entity\UserProfile as ExtendedUserProfileEntity;
 use XF\App as BaseApp;
 use XF\Entity\User as UserEntity;
 use XF\Mvc\Entity\Entity;
@@ -141,12 +141,12 @@ class Listener
 
         if (($content !== null) && ($user instanceof UserEntity) && (method_exists($content, 'canShowSignature')))
         {
-            if (!$user->Option->hasOption('tck_show_signature'))
+            if (!$user->Profile->hasOption('tck_show_signature'))
             {
                 return;
             }
 
-            $user->Option->setOption('tck_show_signature', $content->canShowSignature());
+            $user->Profile->setOption('tck_show_signature', $content->canShowSignature());
             static::$showSigUpdatedForUserIds[$user->user_id] = $user->user_id;
         }
     }
@@ -181,19 +181,19 @@ class Listener
 
         foreach (array_keys(static::$showSigUpdatedForUserIds) AS $userId)
         {
-            /** @var ExtendedUserOptionEntity $userOption */
-            $userOption = static::em()->findCached('XF:UserOption', $userId);
-            if (!$userOption)
+            /** @var ExtendedUserProfileEntity $userProfile */
+            $userProfile = static::em()->findCached('XF:UserProfile', $userId);
+            if (!$userProfile)
             {
                 continue;
             }
 
-            if (!$userOption->hasOption('tck_show_signature'))
+            if (!$userProfile->hasOption('tck_show_signature'))
             {
                 continue;
             }
 
-            $userOption->setOption('tck_show_signature', null);
+            $userProfile->setOption('tck_show_signature', null);
         }
     }
 
